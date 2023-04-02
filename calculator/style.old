@@ -1,0 +1,58 @@
+body {
+	background-color: #333;
+	font-size: 150%;
+	color: #fff;
+	font-family: arial;
+}
+#mainContainer {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+#framebutton {
+	width: fit-content;
+	height: fit-content;
+	cursor: pointer;
+}
+#mainlink {
+	color: #33d;
+}
+#myCalculatorContainer {
+	border: outset #777 3px;
+	padding: 5px;
+}
+.dropdown {
+	user-select: none;
+	position: relative;
+}
+.dropbutton {
+	background-color: #555;
+	padding: 5px;
+	cursor: pointer;
+}
+.dropbutton:hover, .dropbutton:focus {
+	background-color: #444;
+	color: #ddd;
+}
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #555;
+	z-index: 1;
+}
+.dropdown-content div {
+	color: #fff;
+	padding: 5px;
+	display: block;
+	min-width: 160px;
+}
+.dropdown-content div:hover, .dropdown-content div:focus {
+	color: #ddd;
+	background-color: #444;
+}
+.show {
+	display: block;
+}
