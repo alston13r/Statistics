@@ -1,55 +1,48 @@
+class AngleMode {
+  static Degrees = new AngleMode('degrees')
+  static Radians = new AngleMode('radians')
+  constructor(name) {
+    this.name = name
+  }
+}
+
 class SettingsLayer {
+  static additionalSettings = {
+    _angleMode: AngleMode.Radians,
+    _cnvSizeMode: 'static',
+    _ellipseMode: 'center',
+    _rectMode: 'bound',
+    _fill: true,
+    _stroke: true
+  }
   constructor(prevLayer) {
-    this.additionalSettings = {
-      _angleMode: 'radian',
-      _cnvSizeMode: 'static',
-      _ellipseMode: 'center',
-      _rectMode: 'bound',
-      _fill: true,
-      _stroke: true
+    Object.defineProperty(this, 'settings', {value: [], enumerable: false})
+    if (prevLayer instanceof CanvasRenderingContext2D) {
+      for (let k in SettingsLayer.additionalSettings) {
+        prevLayer[k] = SettingsLayer.additionalSettings[k]
+      }
     }
-    
+    for (let k in prevLayer) {
+      let type = typeof prevLayer[k]
+      if (type == 'string' || type == 'number' || type == 'boolean') {
+        this.settings[k] = prevLayer[k]
+        Object.defineProperty(this, k, {
+          get: () => this.settings[k],
+          set: value => this.settings[k] = value,
+          enumerable: true
+        })
+      }
+    }
   }
 }
 
 class Grapher {
   constructor(canvas, ...other) {
-    
-
-
-
-
-
     this.canvas = canvas
     this.ctx = this.canvas.getContext('2d')
     if (other.length > 0) this.setSize = [...other]
-    for (let k in this.baseSettings) {
-      this.ctx[k] = baseSettings[k]
-    }
-    for (let k in this.ctx) {
-      baseSettings[k] = this.ctx[k]
-    }
-    
-
-
-    this.settings = []
-    for (let k in otherSettings) {
-      this.ctx[k] = otherSettings[k]
-    }
-    this.settings[0] = {}
-    for (let k in this.ctx) {
-      let type = typeof ctx[k]
-      if (type == 'string' || type == 'number' || type == 'boolean') {
-        this.settings[0][k] = ctx[k]
-      }
-    }
-
-
+    this.layers = [new SettingsLayer(this.ctx)]
   }
-
-
-
-
   push() {
 
   }
@@ -139,48 +132,6 @@ function updateCtxFromSettings() {
 
 
 
-
-
-
-
-
-/*
-fix initial running
-add event listeners
-	mouse
-		mousedown
-		mouseup
-		mousepress
-		mouseX
-		mouseY
-		mousemove
-	keyboard
-		keydown
-		keyup
-		keypress
-		ctrlKey
-		shiftKey
-		altKey
-
-filter
-fontStretch
-fontVariantCaps
-globalAlpha
-globalCompositeOperation
-imageSmoothingEnabled
-imageSmoothingQuality
-letterSpacing
-lineCap
-lineDashOffset
-lineJoin
-miterLimit
-shadowBlur
-shadowColor
-shadowOffsetX
-shadowOffsetY
-textRendering
-wordSpacing
-*/
 
 
 
@@ -296,62 +247,3 @@ function text(t,x,y,m) {
 	if (csll._stroke) ctx.strokeText(t,x,y,m)
 	if (csll._fill) ctx.fillText(t,x,y,m)
 }
-
-
-
-/*
-add event listeners
-	mouse
-		mousedown
-		mouseup
-		mousepress
-		mouseX
-		mouseY
-		mousemove
-	keyboard
-		keydown
-		keyup
-		keypress
-		ctrlKey
-		shiftKey
-		altKey
-*/
-let mouseX = 0
-let mouseY = 0
-let prevmouseX = 0
-let prevmouseY = 0
-const eventNames = ['mousedown','mouseup','mousepress',
-'mousemove','keydown','keyup','keypress']
-let lastFrame
-function loop() {
-	lastFrame = window.requestAnimationFrame(loop)
-	if (globalThis.hasOwnProperty('draw')) draw()
-	for (let name of eventNames) {
-		if (globalThis.hasOwnProperty(name)) globalThis[name]()
-	}
-}
-function stopLoop() {
-	window.cancelAnimationFrame(lastFrame)
-}
-function updateSize() {
-	if (ctx['_cnvSizeMode'] == 'dynamic') {
-		canv.width = width
-		canv.height = height
-	}
-}
-function interpretButtons(b) {
-	
-}
-function loopInit() {
-	overwriteLast()
-	if (globalThis.hasOwnProperty('setup')) setup()
-	window.requestAnimationFrame(loop)
-	document.addEventListener('mousemove', e => {
-		prevmouseX = mouseX
-		prevmouseY = mouseY
-		mouseX = e.clientX
-		mouseY = e.clientY
-	})
-}
-window.onresize = updateSize
-window.onload = loopInit
