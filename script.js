@@ -1,180 +1,186 @@
 class AngleMode {
-  static Degrees = new AngleMode('degrees')
   static Radians = new AngleMode('radians')
+  static Degrees = new AngleMode('degrees')
   constructor(name) {
     this.name = name
   }
 }
-class BoundaryMode {
-  static Center = new BoundaryMode('center')
-  static Corner = new BoundaryMode('corner')
+class RectMode {
+  static Corner = new RectMode('corner')
+  static Center = new RectMode('center')
+  constructor(name) {
+    this.name = name
+  }
+}
+class EllipseMode {
+  static Corner = new EllipseMode('corner')
+  static Center = new EllipseMode('center')
   constructor(name) {
     this.name = name
   }
 }
 
-class SettingsLayer {
-  static additionalSettings = {
-    _angleMode: AngleMode.Radians,
-    _ellipseMode: BoundaryMode.Center,
-    _rectMode: BoundaryMode.Corner,
-    _fillEnabled: true,
-    _strokeEnabled: true
+class Layer {
+  static Additionals = {
+    fillEnabled: true,
+    strokeEnabled: true,
+    angleMode: AngleMode.Radians,
+    rectMode: RectMode.Corner,
+    ellipseMode: EllipseMode.Center
   }
-  constructor(ctx, prevLayer) {
-    Object.defineProperty(this, 'ctx', {value: ctx, enumerable: false})
-    Object.defineProperty(this, 'settings', {value: [], enumerable: false})
-    if (prevLayer instanceof CanvasRenderingContext2D) {
-      for (let k in SettingsLayer.additionalSettings) {
-        prevLayer[k] = SettingsLayer.additionalSettings[k]
-      }
+  constructor(prev) {
+    if (prev instanceof CanvasRenderingContext2D) {
+      this.ctx = prev
+      for (let k in Layer.Additionals) this.ctx[k] = Layer.Additionals[k]
+    } else this.ctx = prev.ctx
+    for (let k in prev) {
+      let type = typeof prev[k]
+      if (type == 'string' || type == 'number' || type == 'boolean') this[k] = prev[k]
     }
-    for (let k in prevLayer) {
-      let type = typeof prevLayer[k]
-      if (type == 'string' || type == 'number' || type == 'boolean') {
-        this.settings[k] = prevLayer[k]
-        Object.defineProperty(this, k, {
-          get: () => this.settings[k],
-          set: value => this.settings[k] = value,
-          enumerable: true
-        })
-      }
+    for (let k in Layer.Additionals) {
+      this[k] = prev[k]
     }
+    this.updateTransform()
   }
-  updateCtx() {
-    for (let k in this) {
-      this.ctx[k] = this[k]
-    }
+  updateTransform() {
+    this.currTransform = this.ctx.getTransform()
   }
 }
 
 class Grapher {
-  static nonEnumerables = [
-    '_fillEnabled',
-    '_strokeEnabled'
-  ]
-  static nameExceptions = {
-    strokeStyle: {
-      name: 'stroke',
-      getter: () => this.lastLayer.strokeStyle,
-      setter: value => {
-        this.lastLayer.strokeStyle = value
-        this.lastLayer._fillEnabled = true
-      }
-    },
-    fillStyle: {
-      name: 'fill',
-      getter: () => this.lastLayer.fillStyle,
-      setter: value => {
-        this.lastLayer.fillStyle = value
-        this.lastLayer._strokeEnabled = true
-      }
-    },
-    direction: {
-      name: 'textDirection',
-      getter: () => this.lastLayer.direction,
-      setter: value => this.lastLayer.direction = value
-    },
-    fontKerning: {
-      name: 'kerning',
-      getter: () => this.lastLayer.fontKerning,
-      setter: value => this.lastLayer.fontKerning = value
-    },
-    _angleMode: {
-      name: 'angleMode',
-      getter: () => this.lastLayer._angleMode,
-      setter: value => this.lastLayer._angleMode = value
-    },
-    _ellipseMode: {
-      name: 'ellipseMode',
-      getter: () => this.lastLayer._ellipseMode,
-      setter: value => this.lastLayer._ellipseMode = value
-    },
-    _rectMode: {
-      name: 'rectMode',
-      getter: () => this.lastLayer._rectMode,
-      setter: value => this.lastLayer._rectMode = value
-    }
-  }
-  constructor(canvas, ...other) {
+  constructor(canvas, ...others) {
     this.canvas = canvas
     this.ctx = this.canvas.getContext('2d')
-    if (other.length > 0) this.size = [...other]
-    this.layers = [new SettingsLayer(this.ctx, this.ctx)]
+    this.layers = [new Layer(this.ctx)]
+    Object.defineProperty(this, 'lastLayerIndex', {get: () => this.layers.length-1})
+    Object.defineProperty(this, 'lastLayer', {get: () => this.layers[this.lastLayerIndex]})
     for (let k in this.lastLayer) {
-      if (Grapher.nameExceptions.hasOwnProperty(k)) {
-        let exception = Grapher.nameExceptions[k]
-        Object.defineProperty(this, k, {enumerable: false})
-        Object.defineProperty(this, exception.name, {enumerable: true, configurable: true})
-        if (exception.hasOwnProperty('getter')) Object.defineProperty(this, exception.name, {get: exception.getter})
-        if (exception.hasOwnProperty('setter')) Object.defineProperty(this, exception.name, {set: exception.setter})
-      } else {
+      if (k != 'ctx' && k != 'currTransform') {
         Object.defineProperty(this, k, {
           get: () => this.lastLayer[k],
-          set: value => this.lastLayer[k] = value,
-          enumerable: Grapher.nonEnumerables.indexOf(k)==-1
+          set: value => {
+            this.lastLayer[k] = value
+            this.updateCtx()
+          }
         })
       }
     }
-  }
-  push() {
-    this.layers.push(new SettingsLayer(this.ctx, this.lastLayer))
-  }
-  pop() {
-    if (this.layers.length > 1) {
-      this.layers.pop()
-      this.lastLayer.updateCtx()
+    if (others.length > 0) {
+      if (others.length == 1) {
+        if (others[0] instanceof Array) {
+          this.size = [...others[0]]
+        } else {
+          this.size = [others[0], others[0]]
+        }
+      } else if (others.length == 2) {
+        this.size = [...others]
+      }
     }
-  }
-  appendTo(element) {
-    element.appendChild(this.canvas)
   }
   set width(w) {
     this.canvas.width = w
   }
-  set height(h) {
-    this.canvas.height = h
-  }
   get width() {
     return this.canvas.width
+  }
+  set height(h) {
+    this.canvas.height = h
   }
   get height() {
     return this.canvas.height
   }
-  set size(a) {
-    this.width = a[0]
-    this.height = a[1]
+  set size(s) {
+    this.width = s[0]
+    this.height = s[1]
   }
   get size() {
     return [this.width, this.height]
   }
-  get lastLayerIndex() {
-    return this.layers.length-1
+  appendTo(ele) {
+    ele.appendChild(this.canvas)
   }
-  get lastLayer() {
-    return this.layers[this.lastLayerIndex]
+  updateCtx() {
+    for (let k in this.lastLayer) {
+      if (k != 'ctx') this.ctx[k] = this.lastLayer[k]
+      if (k == 'currTransform') this.ctx.setTransform(this.lastLayer[k])
+    }
   }
-  get innerWidth() {
-    return window.innerWidth
+  push() {
+    this.layers.push(new Layer(this.lastLayer))
   }
-  get innerHeight() {
-    return window.innerHeight
+  pop() {
+    if (this.layers.length > 1) {
+      this.layers.pop()
+      this.updateCtx()
+    }
   }
   noFill() {
-    this._fillEnabled = false
+    this.fillEnabled = false
   }
   noStroke() {
-    this._strokeEnabled = false
+    this.strokeEnabled = false
+  }
+  fill(c) {
+    this.fillEnabled = true
+    this.fillStyle = c
+  }
+  stroke(c) {
+    this.strokeEnabled = true
+    this.strokeStyle = c
+  }
+  background(c) {
+    this.push()
+    this.fill(c)
+    this.rect(0, 0, ...this.size)
+    this.pop()
+  }
+  clearRect(x, y, w, h) {
+    this.ctx.clearRect(x, y, w, h)
+  }
+  rect(x, y, w, h) {
+    this.push()
+    if (this.rectMode == RectMode.Corner) this.translate(x, y)
+    else if (this.rectMode == RectMode.Center) this.translate(x - w/2, y - h/2)
+    if (this.fillEnabled) this.ctx.fillRect(0, 0, w, h)
+    if (this.strokeEnabled) this.ctx.strokeRect(0, 0, w, h)
+    this.pop()
+  }
+  ellipse(x, y, w, h) {
+    this.push()
+    if (this.ellipseMode == EllipseMode.Center) this.translate(x, y)
+    else if (this.ellipseMode == EllipseMode.Corner) this.translate(x + w/2, y + h/2)
+    this.ctx.beginPath()
+    this.ctx.ellipse(0, 0, w/2, h/2, 0, 0, Math.PI*2)
+    if (this.fillEnabled) this.ctx.fill()
+    if (this.strokeEnabled) this.ctx.stroke()
+    this.pop()
+  }
+  transform(a, b, c, d, e, f) {
+    this.ctx.transform(a, b, c, d, e, f)
+    this.lastLayer.updateTransform()
+  }
+  translate(x, y) {
+    this.ctx.translate(x, y)
+    this.lastLayer.updateTransform()
+  }
+  setTransform(...params) {
+    if (params.length == 1) {
+      this.ctx.setTransform(params[0])
+    } else {
+      this.ctx.setTransform(...params)
+    }
+    this.lastLayer.updateTransform()
+  }
+  getTransform() {
+    return this.lastLayer.currTransform
+  }
+  resetTransform() {
+    this.ctx.resetTransform()
+    this.lastLayer.updateTransform()
   }
 }
 
-function createGrapher(w, h) {
-  let g = new Grapher(document.createElement('canvas'))
-  g.setSize = [w, h]
-  return g
-}
-
-let grapher = createGrapher(800, 800)
-for (let k in grapher) {
-  console.log(k)
-}
+let canvas = document.createElement('canvas')
+let grapher = new Grapher(canvas, 500, 500)
+grapher.appendTo(document.body)
+CanvasRenderingContext2D.prototype.fillText()
