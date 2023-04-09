@@ -180,6 +180,10 @@ class Grapher {
   }
 }
 
+// add text capabilities
+// add graph capabilities
+//     grid lines and axis numbers
+
 let canvas = document.createElement('canvas')
 let grapher = new Grapher(canvas, 500, 500)
 grapher.appendTo(document.body)
