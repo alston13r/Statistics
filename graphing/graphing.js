@@ -196,18 +196,7 @@ function noStroke() {
 	csll._stroke = false
 	updateCtxFromSettings()
 }
-function lineWidth(w) {
-	csll.lineWidth = w
-	updateCtxFromSettings()
-}
-function line(x1,y1,x2,y2) {
-	if (csll._stroke) {
-		ctx.beginPath()
-		ctx.moveTo(x1,y1)
-		ctx.lineTo(x2,y2)
-		ctx.stroke()
-	}
-}
+
 function lineDash(x1,y1,x2,y2,d) {
 	if (csll._stroke) {
 		let od = ctx.getLineDash()
@@ -218,32 +207,4 @@ function lineDash(x1,y1,x2,y2,d) {
 		ctx.stroke()
 		ctx.setLineDash(od)
 	}
-}
-function textDirection(d) {
-	// ltr rtl inherit
-	csll.direction = d
-	updateCtxFromSettings()
-}
-function textAlign(ta) {
-	// left right center start end
-	csll.textAlign = ta
-	updateCtxFromSettings()
-}
-function textBaseline(tb) {
-	// top hanging middle alphabetic ideographic bottom
-	csll.textBaseline = tb
-	updateCtxFromSettings()
-}
-function font(f) {
-	csll.font = f
-	updateCtxFromSettings()
-}
-function kerning(k) {
-	// auto normal none
-	csll.fontKerning = k
-	updateCtxFromSettings()
-}
-function text(t,x,y,m) {
-	if (csll._stroke) ctx.strokeText(t,x,y,m)
-	if (csll._fill) ctx.fillText(t,x,y,m)
 }
