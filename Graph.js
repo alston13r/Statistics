@@ -175,27 +175,3 @@ let firstParaX = t => t-1.6*Math.cos(24*t)
 let firstParaY = t => t-1.6*Math.sin(25*t)
 
 let firstPara = graph.createParametric(firstParaX,firstParaY)
-
-function draw() {
-	background()
-	graph.draw()
-	
-	graph.graphParametric(firstPara,-2*Math.PI,2*Math.PI)
-	
-	
-	stopLoop()
-}
-
-
-let lastFrame
-function stopLoop() {
-	console.log('loop stopped')
-	window.cancelAnimationFrame(lastFrame)
-}
-function loop() {
-	lastFrame = window.requestAnimationFrame(loop)
-	canv.width = width
-	canv.height = height
-	draw()
-}
-window.requestAnimationFrame(loop)
