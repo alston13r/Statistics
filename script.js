@@ -19,6 +19,43 @@ class EllipseMode {
     this.name = name
   }
 }
+class TextDirection {
+  static LTR = new TextDirection('ltr')
+  static RTL = new TextDirection('rtl')
+  static Inherit = new TextDirection('inherit')
+  constructor(name) {
+    this.name = name
+  }
+}
+class TextAlign {
+  static Left = new TextAlign('left')
+  static Right = new TextAlign('right')
+  static Center = new TextAlign('center')
+  static Start = new TextAlign('start')
+  static End = new TextAlign('end')
+  constructor(name) {
+    this.name = name
+  }
+}
+class TextBaseline {
+  static Top = new TextBaseline('top')
+  static Hanging = new TextBaseline('hanging')
+  static Middle = new TextBaseline('middle')
+  static Alphabetic = new TextBaseline('alphabetic')
+  static Ideographic = new TextBaseline('ideographic')
+  static Bottom = new TextBaseline('bottom')
+  constructor(name) {
+    this.name = name
+  }
+}
+class FontKerning {
+  static Auto = new FontKerning('auto')
+  static Normal = new FontKerning('normal')
+  static None = new FontKerning('none')
+  constructor(name) {
+    this.name = name
+  }
+}
 
 class Layer {
   static Additionals = {
@@ -26,7 +63,11 @@ class Layer {
     strokeEnabled: true,
     angleMode: AngleMode.Radians,
     rectMode: RectMode.Corner,
-    ellipseMode: EllipseMode.Center
+    ellipseMode: EllipseMode.Center,
+    textDirection: TextDirection.LTR,
+    align: TextAlign.Start,
+    baseline: TextBaseline.Alphabetic,
+    kerning: FontKerning.Auto
   }
   constructor(prev) {
     if (prev instanceof CanvasRenderingContext2D) {
@@ -41,9 +82,16 @@ class Layer {
       this[k] = prev[k]
     }
     this.updateTransform()
+    this.updateTextSettings()
   }
   updateTransform() {
     this.currTransform = this.ctx.getTransform()
+  }
+  updateTextSettings() {
+    this.direction = this.textDirection.name
+    this.textAlign = this.align.name
+    this.textBaseline = this.baseline.name
+    this.fontKerning = this.kerning.name
   }
 }
 
@@ -104,6 +152,7 @@ class Grapher {
       if (k != 'ctx') this.ctx[k] = this.lastLayer[k]
       if (k == 'currTransform') this.ctx.setTransform(this.lastLayer[k])
     }
+    this.lastLayer.updateTextSettings()
   }
   push() {
     this.layers.push(new Layer(this.lastLayer))
@@ -178,13 +227,15 @@ class Grapher {
     this.ctx.resetTransform()
     this.lastLayer.updateTransform()
   }
+  text(t, x, y, maxWidth) {
+    if (this.strokeEnabled) this.ctx.strokeText(t, x, y, maxWidth)
+    if (this.fillEnabled) this.ctx.fillText(t, x, y, maxWidth)
+  }
 }
 
-// add text capabilities
 // add graph capabilities
 //     grid lines and axis numbers
 
 let canvas = document.createElement('canvas')
 let grapher = new Grapher(canvas, 500, 500)
 grapher.appendTo(document.body)
-CanvasRenderingContext2D.prototype.fillText()
