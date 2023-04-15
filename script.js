@@ -95,7 +95,7 @@ class Layer {
   }
 }
 
-class Grapher {
+class GraphingUtil {
   constructor(canvas, ...others) {
     this.canvas = canvas
     this.ctx = this.canvas.getContext('2d')
@@ -253,5 +253,5 @@ class Grapher {
 //     grid lines and axis numbers
 
 let canvas = document.createElement('canvas')
-let grapher = new Grapher(canvas, 500, 500)
+let grapher = new GraphingUtil(canvas, 500, 500)
 grapher.appendTo(document.body)
