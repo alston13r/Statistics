@@ -1,17 +1,35 @@
-function rand(a,b,c) {
-	if (c == undefined) {
-		if (b == undefined) {
-			if (a == undefined) return Math.random()
-			return Math.floor(Math.random()*(a+1))
-		} return Math.floor(Math.random()*(b-a+1)+a)
-	} else {
-		let res = Array(c)
-		for (let i=0;i<c;i++) {
-			res[i] = rand(a,b)
-		}
-		return res
-	}
+function floor(x) {
+  if (x instanceof Array) {
+    let res = []
+    for (let y of x) res.push(floor(y))
+    return res
+  }
+  return Math.floor(x)
 }
+
+function rand(a, b, c) {
+  if (c == undefined) {
+    if (b == undefined) {
+      if (a == undefined) return Math.random()
+      return rand()*a
+    }
+    return rand(b-a) + a
+  }
+  let res = []
+  for (let i=0; i<c; i++) res.push(rand(a, b))
+  return res
+}
+
+function randInt(a, b, c) {
+  if (c == undefined) {
+    if (b == undefined) return floor(rand(a+1))
+    return randInt(b-a) + a
+  }
+  let res = []
+  for (let i=0; i<c; i++) res.push(randInt(a, b))
+  return res
+}
+
 function map(x,a,b,c,d) {
 	if (x instanceof Array) {
 		let res = []
@@ -19,9 +37,8 @@ function map(x,a,b,c,d) {
 			res.push(map(y,a,b,c,d))
 		}
 		return res
-	} else {
-		return (x-a)/(b-a)*(d-c)+c
 	}
+  return (x-a)/(b-a)*(d-c)+c
 }
 function lerp(t,a,b) {
 	return map(t,0,1,a,b)

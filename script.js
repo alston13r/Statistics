@@ -231,8 +231,24 @@ class Grapher {
     if (this.strokeEnabled) this.ctx.strokeText(t, x, y, maxWidth)
     if (this.fillEnabled) this.ctx.fillText(t, x, y, maxWidth)
   }
+  line(x1, y1, x2, y2) {
+    if (this.strokeEnabled) {
+      this.ctx.beginPath()
+      this.ctx.moveTo(x1, y1)
+      this.ctx.lineTo(x2, y2)
+      this.ctx.stroke()
+    }
+  }
+  lineDash(x1, y1, x2, y2, d) {
+    if (this.strokeEnabled) {
+      this.push()
+      // add dash stuff and line
+      this.pop()
+    }
+  }
 }
 
+// add dashed lines
 // add graph capabilities
 //     grid lines and axis numbers
 
