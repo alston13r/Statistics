@@ -235,6 +235,12 @@ class GraphingUtility {
     this.strokeEnabled = true
     this.strokeStyle = c
   }
+  fillPath() {
+    this.ctx.fill()
+  }
+  strokePath() {
+    this.ctx.stroke()
+  }
   background(c) {
     this.push()
     this.fill(c)
