@@ -10,6 +10,10 @@ class Graph {
     this.defaultFunctionSize = 2
     this.defaultParametricSize = 2
     this.defaultParametricDensity = 0.1
+    this.defaultAxisWidth = 1.5
+    this.defaultAxisColor = '#777'
+    this.defaultGridWidth = 1
+    this.defaultGridColor = '#222'
     if (options != undefined) {
       for (let k in options) {
         this[k] = options[k]
@@ -113,18 +117,23 @@ class Graph {
     }
     this.grapher.pop()
   }
+  drawAxes(color, width) {
+    let c = color ? color : this.defaultAxisColor
+    let w = width ? width : this.defaultAxisWidth
+    this.line(this.xLower-1, 0, this.xUpper+1, 0, c, w)
+    this.line(0, this.yLower-1, 0, this.yUpper+1, c, w)
+  }
+  drawGrid(color, width) {
+    let c = color ? color : this.defaultGridColor
+    let w = width ? width : this.defaultGridWidth
+
+  }
 }
 
-// x and y axis
 // grid lines
 // axis scale
 
-
 /*
-
-
-
-
 	graphLabel(x,y,label,f='#555',align='start',base='alphabetic') {
 		ctx.fillStyle = f
 		ctx.font = '20px arial'
