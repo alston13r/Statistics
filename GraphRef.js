@@ -10,7 +10,7 @@ class Parametric {
 		return [this.xfunc(t),this.yfunc(t)]
 	}
 	pointToCanv(x,y) {
-		if (this.parent instanceof Graph) {
+		if (this.parent instanceof GraphRef) {
 			return this.parent.graphToCanv(x,y)
 		} else {
 			return undefined
@@ -18,7 +18,7 @@ class Parametric {
 	}
 }
 
-class Graph {
+class GraphRef {
 	constructor(x1=-10,y1=-10,x2=10,y2=10,dx=1,dy=1) {
 		this.xb = [x1,x2]
 		this.yb = [y1,y2]
@@ -169,7 +169,7 @@ function drawPixel(x,y,c='#f00') {
 	ctx.fillStyle = oc
 }
 
-let graph = new Graph(-20,-20,20,20)
+let graph = new GraphRef(-20,-20,20,20)
 
 let firstParaX = t => t-1.6*Math.cos(24*t)
 let firstParaY = t => t-1.6*Math.sin(25*t)
