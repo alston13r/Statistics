@@ -28,6 +28,8 @@ const asin = (x, d) => singleOrArray((x, d) => !d?Math.asin(x):radToDeg(asin(x))
 const acos = (x, d) => singleOrArray((x, d) => !d?Math.acos(x):radToDeg(acos(x)), x, d)
 const atan = (x, d) => singleOrArray((x, d) => !d?Math.atan(x):radToDeg(atan(x)), x, d)
 
+const round = (x, p) => singleOrArray((x, a) => Math.round(x*a)/a, x, 10**p)
+
 function rand(a, b, c) {
   if (c == undefined) {
     if (b == undefined) {
