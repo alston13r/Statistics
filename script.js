@@ -1,5 +1,4 @@
 let canvas = document.createElement('canvas')
-let grapher = new Graph(canvas, [-20,20], [-5,35], 500)
+let grapher = new Graph(canvas, [-5,5], [-5,5], 500)
 grapher.appendTo(document.body)
 grapher.clear()
-grapher.graphFunction(sin, null, 2)
