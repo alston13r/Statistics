@@ -4,9 +4,12 @@ class Graph {
     this.defaultLineColor = '#fff'
     this.defaultPointColor = '#f00'
     this.defaultFunctionColor = '#700'
+    this.defaultParametricColor = '#00f'
     this.defaultLineWidth = 2
     this.defaultPointRadius = 5
-    this.defaultFunctionSize = 1
+    this.defaultFunctionSize = 2
+    this.defaultParametricSize = 2
+    this.defaultParametricDensity = 0.1
     if (options != undefined) {
       for (let k in options) {
         this[k] = options[k]
@@ -66,17 +69,47 @@ class Graph {
     this.grapher.ellipse(...this.graphToCanv(x, y), r, r)
     this.grapher.pop()
   }
-  graphFunction(func, color, width) {
+  graphFunction(func, color, size) {
     this.grapher.push()
     this.grapher.noStroke()
     this.grapher.fill(color ? color : this.defaultFunctionColor)
     this.grapher.rectMode = RectMode.Center
-    let s = width ? width : this.defaultFunctionSize
+    let s = size ? size : this.defaultFunctionSize
     let canvasWidth = this.getCanvasSize()[0]
     for (let i=-5; i<canvasWidth+5; i++) {
       let functionX = this.canvToGraphX(i)
       let mappedY = this.graphToCanvY(func(functionX))
       this.pixel(i, mappedY, s)
+    }
+    this.grapher.pop()
+  }
+  graphParametric(xFunc, yFunc, tLower, tUpper, density, lining, pointing, color, size) {
+    this.grapher.push()
+    let d = density ? density : this.defaultParametricDensity
+    let c = color ? color : this.defaultParametricColor
+    let s = size ? size : this.defaultParametricSize
+    if (pointing) this.grapher.fill(c)
+    else this.grapher.noFill()
+    if (lining) {
+      this.grapher.stroke(c)
+      this.grapher.lineWidth = s
+    }
+    else this.grapher.noStroke()
+    if (lining || pointing) {
+      let prev = []
+      for (let t=tLower; t<=tUpper+d; t+=d) {
+        let currX = xFunc(t)
+        let currY = yFunc(t)
+        if (lining) {
+          if (prev.length != 0) {
+            this.grapher.line(...this.graphToCanv(...prev), ...this.graphToCanv(currX, currY))
+          }
+          prev = [currX, currY]
+        }
+        if (pointing) {
+          this.pixel(...this.graphToCanv(currX, currY), s)
+        }
+      }
     }
     this.grapher.pop()
   }
