@@ -118,3 +118,38 @@ class Graph {
 // x and y axis
 // grid lines
 // axis scale
+
+
+/*
+
+
+
+
+	graphLabel(x,y,label,f='#555',align='start',base='alphabetic') {
+		ctx.fillStyle = f
+		ctx.font = '20px arial'
+		ctx.textBaseline = base
+		ctx.textAlign = align
+		ctx.fillText(label,x,y)
+	}
+	drawGrid() {
+		let xc = (this.xb[1]-this.xb[0])/this.dx
+		let yc = (this.yb[1]-this.yb[0])/this.dy
+		for (let i=0;i<=xc;i++) {
+			let x = map(i/xc,0,1,0,width)
+			drawLine(x,0,x,height,this.gridColor)
+		}
+		for (let j=0;j<yc;j++) {
+			let y = map(j/yc,0,1,0,height)
+			drawLine(0,y,width,y,this.gridColor)
+		}
+	}
+	drawAxis() {
+		let xaxarr = [...this.graphToCanv(this.xb[0],0),...this.graphToCanv(this.xb[1],0)]
+		let yaxarr = [...this.graphToCanv(0,this.yb[0]),...this.graphToCanv(0,this.yb[1])]
+		drawLine(...xaxarr,this.axisColor)
+		drawLine(...yaxarr,this.axisColor)
+	}
+
+
+  */
