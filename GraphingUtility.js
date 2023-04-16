@@ -2,14 +2,31 @@ const PI = Math.PI
 const HALF_PI = PI/2
 const TWO_PI = PI*2
 
-function floor(x) {
+function singleOrArray(func, ...params) {
+  let x = params.shift()
   if (x instanceof Array) {
     let res = []
-    for (let y of x) res.push(floor(y))
+    for (let y of x) res.push(func(y, ...params))
     return res
   }
-  return Math.floor(x)
+  return func(x, ...params)
 }
+
+const radToDeg = x => singleOrArray(x => x*180/PI, x)
+const degToRad = x => singleOrArray(x => x*PI/180, x)
+
+const floor = x => singleOrArray(Math.floor, x)
+const ceil = x => singleOrArray(Math.ceil, x)
+
+const map = (x, a, b, c, d) => singleOrArray((x, a, b, c, d) => (x-a)/(b-a)*(d-c)+c, x, a, b, c, d)
+const lerp = (t, a, b) => map(t, 0, 1, a, b)
+
+const sin = (x, d) => singleOrArray((x, d) => !d?Math.sin(x):sin(degToRad(x)), x, d)
+const cos = (x, d) => singleOrArray((x, d) => !d?Math.cos(x):cos(degToRad(x)), x, d)
+const tan = (x, d) => singleOrArray((x, d) => !d?Math.tan(x):tan(degToRad(x)), x, d)
+const asin = (x, d) => singleOrArray((x, d) => !d?Math.asin(x):radToDeg(asin(x)), x, d)
+const acos = (x, d) => singleOrArray((x, d) => !d?Math.acos(x):radToDeg(acos(x)), x, d)
+const atan = (x, d) => singleOrArray((x, d) => !d?Math.atan(x):radToDeg(atan(x)), x, d)
 
 function rand(a, b, c) {
   if (c == undefined) {
@@ -33,28 +50,6 @@ function randInt(a, b, c) {
   for (let i=0; i<c; i++) res.push(randInt(a, b))
   return res
 }
-
-function map(x,a,b,c,d) {
-  if (x instanceof Array) {
-    let res = []
-    for (let y of x) res.push(map(y,a,b,c,d))
-    return res
-  }
-  return (x-a)/(b-a)*(d-c)+c
-}
-
-function lerp(t, a, b) {
-  return map(t, 0, 1, a, b)
-}
-
-function radToDeg(x) {
-  return x*180/PI
-}
-
-function degToRad(x) {
-  return x*PI/180
-}
-
 
 class AngleMode {
   static Radians = new AngleMode('radians')
@@ -140,10 +135,14 @@ class Layer {
       this[k] = prev[k]
     }
     this.updateTransform()
+    this.updateLineDash()
     this.updateTextSettings()
   }
   updateTransform() {
     this.currTransform = this.ctx.getTransform()
+  }
+  updateLineDash() {
+    this.currLineDash = this.ctx.getLineDash()
   }
   updateTextSettings() {
     this.direction = this.textDirection.name
@@ -209,6 +208,7 @@ class GraphingUtility {
     for (let k in this.lastLayer) {
       if (k != 'ctx') this.ctx[k] = this.lastLayer[k]
       if (k == 'currTransform') this.ctx.setTransform(this.lastLayer[k])
+      if (k == 'currLineDash') this.ctx.setLineDash(this.lastLayer[k])
     }
     this.lastLayer.updateTextSettings()
   }
@@ -243,6 +243,7 @@ class GraphingUtility {
   }
   background(c) {
     this.push()
+    this.noStroke()
     this.fill(c)
     this.rect(0, 0, ...this.size)
     this.pop()
@@ -264,8 +265,8 @@ class GraphingUtility {
     else if (this.ellipseMode == EllipseMode.Corner) this.translate(x + w/2, y + h/2)
     this.ctx.beginPath()
     this.ctx.ellipse(0, 0, w/2, h/2, 0, 0, Math.PI*2)
-    if (this.fillEnabled) this.ctx.fill()
-    if (this.strokeEnabled) this.ctx.stroke()
+    if (this.fillEnabled) this.fillPath()
+    if (this.strokeEnabled) this.strokePath()
     this.pop()
   }
   transform(a, b, c, d, e, f) {
@@ -300,19 +301,32 @@ class GraphingUtility {
       this.ctx.beginPath()
       this.ctx.moveTo(x1, y1)
       this.ctx.lineTo(x2, y2)
-      this.ctx.stroke()
+      this.strokePath()
     }
   }
   lineDash(x1, y1, x2, y2, d) {
     if (this.strokeEnabled) {
       this.push()
-      // add dash stuff and line
+      this.setLineDash(d)
+      this.ctx.beginPath()
+      this.ctx.moveTo(x1, y1)
+      this.ctx.lineTo(x2, y2)
+      this.strokePath()
       this.pop()
     }
   }
+  setLineDash(d) {
+    this.ctx.setLineDash(d)
+    this.lastLayer.updateLineDash()
+  }
+  getLineDash() {
+    return this.ctx.getLineDash()
+  }
+  measureText(t) {
+    return this.ctx.measureText(t)
+  }
 }
 
-// add dashed lines
 // add graph capabilities
 //     grid lines and axis numbers
 
