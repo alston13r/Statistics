@@ -27,6 +27,12 @@ const tan = (x, d) => singleOrArray((x, d) => !d?Math.tan(x):tan(degToRad(x)), x
 const asin = (x, d) => singleOrArray((x, d) => !d?Math.asin(x):radToDeg(asin(x)), x, d)
 const acos = (x, d) => singleOrArray((x, d) => !d?Math.acos(x):radToDeg(acos(x)), x, d)
 const atan = (x, d) => singleOrArray((x, d) => !d?Math.atan(x):radToDeg(atan(x)), x, d)
+const sinh = (x, d) => singleOrArray((x, d) => !d?Math.sinh(x):sinh(degToRad(x)), x, d)
+const cosh = (x, d) => singleOrArray((x, d) => !d?Math.cosh(x):cosh(degToRad(x)), x, d)
+const tanh = (x, d) => singleOrArray((x, d) => !d?Math.tanh(x):tanh(degToRad(x)), x, d)
+const asinh = (x, d) => singleOrArray((x, d) => !d?Math.asinh(x):radToDeg(asinh(x)), x, d)
+const acosh = (x, d) => singleOrArray((x, d) => !d?Math.acosh(x):radToDeg(acosh(x)), x, d)
+const atanh = (x, d) => singleOrArray((x, d) => !d?Math.atanh(x):radToDeg(atanh(x)), x, d)
 
 const round = (x, p) => singleOrArray((x, a) => Math.round(x*a)/a, x, 10**p)
 
