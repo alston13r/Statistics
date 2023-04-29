@@ -21,10 +21,10 @@ class RGB {
     return [this.r/255, this.g/255, this.b/255]
   }
   getMax() {
-    return Math.max(...this.getNormal())
+    return max(...this.getNormal())
   }
   getMin() {
-    return Math.min(...this.getNormal())
+    return min(...this.getNormal())
   }
   getHue(rp, gp, bp, d) {
     let max = this.getMax()
@@ -49,7 +49,7 @@ class RGB {
 
     let H = this.getHue(rp, gp, bp, delta)
     let L = (max+min)/2
-    let S = delta!=0 ? delta/(1-Math.abs(2*L-1)) : 0
+    let S = delta!=0 ? delta/(1-abs(2*L-1)) : 0
     return new HSL(H>0?H:360+H, S, L)
   }
   toHSV() {
@@ -65,7 +65,7 @@ class RGB {
   toCMYK() {
     let rp, gp, bp
     [rp, gp, bp] = this.getNormal()
-    let K = 1-Math.max(rp, gp, bp)
+    let K = 1-max(rp, gp, bp)
     let C = (1-rp-K)/(1-K)
     let M = (1-gp-K)/(1-K)
     let Y = (1-bp-K)/(1-K)
@@ -91,12 +91,12 @@ class HSL {
     yield this.l
   }
   toRGB() {
-    let C = (1-Math.abs(2*this.l-1))*this.s
-    let X = C*(1-Math.abs(this.h/60%2-1))
+    let C = (1-abs(2*this.l-1))*this.s
+    let X = C*(1-abs(this.h/60%2-1))
     let m = this.l-C/2
     
-    X = Math.round((X+m)*255)
-    C = Math.round((C+m)*255)
+    X = round((X+m)*255)
+    C = round((C+m)*255)
 
     if (this.h < 60) return new RGB(C, X, 0)
     else if (this.h < 120) return new RGB(X, C, 0)
@@ -132,11 +132,11 @@ class HSV {
   }
   toRGB() {
     let C = this.v*this.s
-    let X = C*(1-Math.abs(this.h/60%2-1))
+    let X = C*(1-abs(this.h/60%2-1))
     let m = this.v - C
 
-    X = Math.round((X+m)*255)
-    C = Math.round((C+m)*255)
+    X = round((X+m)*255)
+    C = round((C+m)*255)
 
     if (this.h < 60) return new RGB(C, X, 0)
     else if (this.h < 120) return new RGB(X, C, 0)
