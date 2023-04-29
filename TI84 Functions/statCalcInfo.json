@@ -1,14 +1,29 @@
 {
   "1-Var Stats": {
-
+    "items": [
+      {"name": "List", "type": "list", "description": "idk"}
+    ],
+    "description": "to write"
   },
   "2-Var Stats": {
-
+    "items": [
+      {"name": "Xlist", "type": "list", "description": "idk"},
+      {"name": "Ylist", "type": "list", "description": "idk"}
+    ],
+    "description": "to write"
   },
   "LinReg(ax+b)": {
-
+    "items": [
+      {"name": "Xlist", "type": "list", "description": "idk"},
+      {"name": "Ylist", "type": "list", "description": "idk"}
+    ],
+    "description": "to write"
   },
   "LinReg(a+bx)": {
-    
+    "items": [
+      {"name": "Xlist", "type": "list", "description": "idk"},
+      {"name": "Ylist", "type": "list", "description": "idk"}
+    ],
+    "description": "to write"
   }
 }
