@@ -117,6 +117,10 @@ class Graph {
     }
     this.grapher.pop()
   }
+  graphNormalCurve(mu, stdev, color, size) {
+    let fx = x => 1/(stdev*ROOT_TWO_PI)*exp(-0.5*((x-mu)/stdev)**2)
+    this.graphFunction(fx, color, size)
+  }
   drawAxes(color, width) {
     let c = color ? color : this.defaultAxisColor
     let w = width ? width : this.defaultAxisWidth
