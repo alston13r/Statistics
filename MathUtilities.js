@@ -364,6 +364,7 @@ const floor = x => singleOrArray(Math.floor, x)
 const ceil = x => singleOrArray(Math.ceil, x)
 const sqrt = x => singleOrArray(Math.sqrt, x)
 const exp = x => singleOrArray(Math.exp, x)
+const abs = x => singleOrArray(Math.abs, x)
 
 const ROOT_PI = sqrt(PI)
 const ROOT_HALF_PI = sqrt(HALF_PI)
@@ -385,7 +386,7 @@ const asinh = (x, d) => singleOrArray((x, d) => !d?Math.asinh(x):radToDeg(asinh(
 const acosh = (x, d) => singleOrArray((x, d) => !d?Math.acosh(x):radToDeg(acosh(x)), x, d)
 const atanh = (x, d) => singleOrArray((x, d) => !d?Math.atanh(x):radToDeg(atanh(x)), x, d)
 
-const round = (x, p) => singleOrArray((x, a) => Math.round(x*a)/a, x, 10**p)
+const round = (x, p) => singleOrArray((x, a) => Math.round(x*a)/a, x, 10**(p!=undefined?p:0))
 
 function rand(a, b, c) {
   if (c == undefined) {
