@@ -1,2 +1,0 @@
-Add area for all the functions
-Add table that shows certain values and calculations
