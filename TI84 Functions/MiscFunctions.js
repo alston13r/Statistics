@@ -1,13 +1,11 @@
-function ZScore(x,mu,stdev) {
-	return (x-mu)/stdev
+function ZScore(x, mu, stdev) {
+  return (x-mu)/stdev
 }
 
-
-function BinomCoefficient(n,k) {
+function BinomCoefficient(n, k) {
 	if (k > n || k < 0) return 0
 	return PascalTri.getRow(n)[k]
 }
-
 
 const PascalTri = {
 	get len() {
