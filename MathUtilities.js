@@ -381,6 +381,6 @@ function randGaussian(a) {
     return t / 6
   }
   let res = []
-  for (let i=0;i<t;i++) res.push(randGaussian())
+  for (let i=0;i<a;i++) res.push(randGaussian())
   return res
 }
