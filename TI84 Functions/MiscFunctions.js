@@ -1,7 +1,3 @@
-function ZScore(x, mu, stdev) {
-  return (x-mu)/stdev
-}
-
 function BinomCoefficient(n, k) {
 	if (k > n || k < 0) return 0
 	return PascalTri.getRow(n)[k]
@@ -30,4 +26,16 @@ const PascalTri = {
 		newRow.push(1)
 		this.rows.push([...newRow])
 	}
+}
+
+function DF2SampTTest(a, b) {
+  let c = a.variance(true)/a.length
+  let d = b.variance(true)/b.length
+  let top = (c+d)**2
+  let bottom = c**2/(a.length-1)+d**2/(b.length-1)
+  return top/bottom
+}
+
+function ZScore(x, mu, stdev) {
+  return (x-mu)/stdev
 }
