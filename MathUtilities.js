@@ -1,3 +1,5 @@
+const specialCharacters = ['Σ','μ','σ']
+
 class Matrix {
   constructor(r,c) {
     if (r instanceof Array) {
@@ -310,6 +312,35 @@ class List {
   standardDeviation(sample) {
     return List.standardDeviation(this, sample)
   }
+  static correlation(x, y) {
+    if (x.length != y.length) return
+    let xb = x.mean()
+    let sx = x.standardDeviation(true)
+    let yb = y.mean()
+    let sy = y.standardDeviation(true)
+    return x.map(a => (a-xb)/sx).map((a,i) => a*(y[i]-yb)/sy).sum()/(x.length-1)
+  }
+  correlation(l) {
+    return List.correlation(this, l)
+  }
+  static determination(x, y) {
+    return List.correlation(x, y)**2
+  }
+  determination(l) {
+    return List.determination(this, l)
+  }
+  static linRegSlope(x, y) {
+    return List.correlation(x, y)*y.standardDeviation(true)/x.standardDeviation(true)
+  }
+  linRegSlope(l) {
+    return List.linRegSlope(this, l)
+  }
+  static linRegIntercept(x, y) {
+    return y.mean()-(List.linRegSlope(x, y)*x.mean())
+  }
+  linRegIntercept(l) {
+    return List.linRegIntercept(this, l)
+  }
 }
 
 const PI = Math.PI
@@ -332,6 +363,11 @@ const degToRad = x => singleOrArray(x => x*PI/180, x)
 const floor = x => singleOrArray(Math.floor, x)
 const ceil = x => singleOrArray(Math.ceil, x)
 const sqrt = x => singleOrArray(Math.sqrt, x)
+const exp = x => singleOrArray(Math.exp, x)
+
+const ROOT_PI = sqrt(PI)
+const ROOT_HALF_PI = sqrt(HALF_PI)
+const ROOT_TWO_PI = sqrt(TWO_PI)
 
 const map = (x, a, b, c, d) => singleOrArray((x, a, b, c, d) => (x-a)/(b-a)*(d-c)+c, x, a, b, c, d)
 const lerp = (t, a, b) => map(t, 0, 1, a, b)
