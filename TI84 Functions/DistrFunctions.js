@@ -8,7 +8,7 @@ function df2stt(arr1,arr2) {
 	return top/bottom
 }
 
-function chi2(observed, expected) {
+function Chi2(observed, expected) {
 	let s = 0
 	for (let [i,e] of expected.entries()) {
 		s += round((observed[i]-e)**2/e,3)
