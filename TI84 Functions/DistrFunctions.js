@@ -31,11 +31,9 @@ function BinomPDF(n,p,k) {
 }
 
 function BinomCDF(n,p,k) {
-	let sum = 0
-	for (let i=k;i>=0;i--) {
-		sum += BinomPDF(i,n,p)
-	}
-	return sum
+	let s = 0
+	for (let i=k;i>=0;i--) s += BinomPDF(i,n,p)
+	return s
 }
 
 function GeometricPDF(p,k) {
