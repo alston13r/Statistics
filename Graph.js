@@ -126,12 +126,8 @@ class Graph {
   drawGrid(color, width) {
     let c = color ? color : this.defaultGridColor
     let w = width ? width : this.defaultGridWidth
-
   }
 }
-
-// grid lines
-// axis scale
 
 /*
 	graphLabel(x,y,label,f='#555',align='start',base='alphabetic') {
