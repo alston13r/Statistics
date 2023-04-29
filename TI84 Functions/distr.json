@@ -1,0 +1,95 @@
+{
+  "Binom PDF": {
+    "items": [
+      {"name": "trials", "type": "number", "description": "Number of trials"},
+      {"name": "p", "type": "number", "description": "Probability of success"},
+      {"name": "x value", "type": "number", "description": "idk"}
+    ],
+    "description": "to write"
+  },
+  "Binom CDF": {
+    "items": [
+      {"name": "trials", "type": "number", "description": "Number of trials"},
+      {"name": "p", "type": "number", "description": "Probability of success"},
+      {"name": "x value", "type": "number", "description": "idk"}
+    ],
+    "description": "to write"
+  },
+  "Chi Squared PDF": {
+    "items": [
+      {"name": "x value", "type": "number", "description": ""},
+      {"name": "df", "type": "number", "description": "Degrees of freedom"}
+    ],
+    "description": "to write"
+  },
+  "Chi Squared CDF": {
+    "items": [
+      {"name": "lower", "type": "number", "description": ""},
+      {"name": "upper", "type": "number", "description": ""},
+      {"name": "df", "type": "number", "description": "Degrees of freedom"}
+    ],
+    "description": "to write"
+  },
+  "Geometric PDF": {
+    "items": [
+      {"name": "p", "type": "number", "description": ""},
+      {"name": "x value", "type": "number", "description": ""}
+    ],
+    "description": "to write"
+  },
+  "Geometric CDF": {
+    "items": [
+      {"name": "p", "type": "number", "description": ""},
+      {"name": "x value", "type": "number", "description": ""}
+    ],
+    "description": "to write"
+  },
+  "Inverse Norm": {
+    "items": [
+      {"name": "area", "type": "number", "description": ""},
+      {"name": "Mean", "type": "number", "description": ""},
+      {"name": "Standard deviation", "type": "number", "description": ""},
+      {"name": "Tail", "type": "choice", "description": ""}
+    ],
+    "description": "to write"
+  },
+  "Inverse T": {
+    "items": [
+      {"name": "area", "type": "number", "description": ""},
+      {"name": "df", "type": "number", "description": ""}
+    ],
+    "description": "to write"
+  },
+  "Normal PDF": {
+    "items": [
+      {"name": "x value", "type": "number", "description": ""},
+      {"name": "Mean", "type": "number", "description": ""},
+      {"name": "Standard deviation", "type": "number", "description": ""}
+    ],
+    "description": "Calculate the probability of a random event having the value of X on a normal distribution with the given mean and standard deviation"
+  },
+  "Normal CDF": {
+    "items": [
+      {"name": "lower", "type": "number", "description": ""},
+      {"name": "upper", "type": "number", "description": ""},
+      {"name": "Mean", "type": "number", "description": ""},
+      {"name": "Standard deviation", "type": "number", "description": ""}
+    ],
+    "description": "to write"
+  },
+  "T PDF": {
+    "items": [
+      {"name": "x value", "type": "number", "description": ""},
+      {"name": "df", "type": "number", "description": ""}
+    ],
+    "description": "to write"
+  },
+  "T CDF": {
+    "items": [
+      {"name": "lower", "type": "number", "description": ""},
+      {"name": "upper", "type": "number", "description": ""},
+      {"name": "df", "type": "number", "description": ""}
+    ],
+    "description": "to write"
+  }
+}

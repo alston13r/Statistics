@@ -1,0 +1,50 @@
+{
+  "Z-Test": {
+    
+  },
+  "T-Test": {
+
+  },
+  "2-SampZTest": {
+
+  },
+  "2-SampTTest": {
+
+  },
+  "1-PropZTest": {
+
+  },
+  "2-PropZTest": {
+
+  },
+  "ZInterval": {
+
+  },
+  "TInterval": {
+
+  },
+  "2-SampZInt": {
+
+  },
+  "2-SampTInt": {
+
+  },
+  "1-PropZInt": {
+
+  },
+  "2-PropZInt": {
+
+  },
+  "ChiSquared-Test": {
+
+  },
+  "ChiSquaredGOF-Test": {
+
+  },
+  "LinRegTTest": {
+
+  },
+  "LinRegTInt": {
+
+  }
+}
