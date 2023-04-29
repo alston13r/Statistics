@@ -9,12 +9,19 @@ Figure out what pdf is used for
   like seriously huh????
 
 Tree diagram maker?
+Venn diagram maker?
 Probability calculations
+  chi2cdf
+  invnorm
+  invt
+  tcdf
+
+Chi squared
+  rewrite in terms of lists
+  maybe even gof for tables or independence :O
 
 graphing stuff
   statistics
-    t curve
-    x^2 curve
     scatter plot
     lin reg
     box plot
