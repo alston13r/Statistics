@@ -121,6 +121,18 @@ class Graph {
     let fx = x => 1/(stdev*ROOT_TWO_PI)*exp(-0.5*((x-mu)/stdev)**2)
     this.graphFunction(fx, color, size)
   }
+  graphTCurve(df, color, size) {
+    let c1 = math.gamma((df+1)/2)/(sqrt(df*PI)*math.gamma(df/2))
+    let c2 = -(df+1)/2
+    let fx = x => c1*(1+x**2/df)**c2
+    this.graphFunction(fx, color, size)
+  }
+  graphChi2Curve(df, color, size) {
+    let a = df/2-1
+    let b = 2**(df/2)*math.gamma(df/2)
+    let fx = x => x**a*exp(-x/2)/b
+    this.graphFunction(x => x>=0?fx(x):0, color, size)
+  }
   drawAxes(color, width) {
     let c = color ? color : this.defaultAxisColor
     let w = width ? width : this.defaultAxisWidth
