@@ -1,23 +1,37 @@
-function df2stt(arr1,arr2) {
-	let a = variance(arr1,true)/arr1.length
-	let b = variance(arr2,true)/arr2.length
-	let top = (a+b)**2
-	let c = a**2/(arr1.length-1)
-	let d = b**2/(arr2.length-1)
-	let bottom = c+d
-	return top/bottom
+function BinomPDF(trials, p, x) {
+  let coeff = BinomCoefficient(trials, x)
+  return coeff*p**x*(1-p)**(trials-x)
 }
 
-function Chi2(observed, expected) {
-	let s = 0
-	for (let [i,e] of expected.entries()) {
-		s += round((observed[i]-e)**2/e,3)
-	}
-	return s
+function BinomCDF(trials, p, x) {
+  let s = 0
+  for (let i=x;i>=0;i--) s += BinomPDF(trials, p, i)
+  return s
 }
+
+function Chi2PDF(x, df) {
+  let a = df/2-1
+  let b = 2**(df/2)*math.gamma(df/2)
+  let fx = x => x**a*exp(-x/2)/b
+  return x>=0?fx(x):0
+}
+
+function Chi2CDF(lower, upper, df) {}
+
+function GeometricPDF(p, x) {
+  return p*(1-p)**(x-1)
+}
+
+function GeometricCDF(p, x) {
+  return 1-(1-p)**x
+}
+
+function InvNorm() {}
+
+function InvT() {}
 
 function NormalPDF(x,mu,stdev) {
-	return 1/(stdev*Math.sqrt(2*Math.PI))*Math.exp(-0.5*ZScore(x,mu,stdev)**2)
+	return 1/(stdev*Math.sqrt(2*Math.PI))*Math.exp(-0.5*((x-mu)/stdev)**2)
 }
 
 function NormalCDF(a,b,c,d) {
@@ -25,21 +39,10 @@ function NormalCDF(a,b,c,d) {
 	else return NormalCDF(b,c,d)-NormalCDF(a,c,d)
 }
 
-function BinomPDF(n,p,k) {
-	let coeff = BinomCoefficient(n,k)
-	return coeff*p**k*(1-p)**(n-k)
+function TPDF(x, df) {
+  let c1 = math.gamma((df+1)/2)/(sqrt(df*PI)*math.gamma(df/2))
+  let c2 = -(df+1)/2
+  return c1*(1+x**2/df)**c2
 }
 
-function BinomCDF(n,p,k) {
-	let s = 0
-	for (let i=k;i>=0;i--) s += BinomPDF(i,n,p)
-	return s
-}
-
-function GeometricPDF(p,k) {
-	return p*(1-p)**(k-1)
-}
-
-function GeometricCDF(p,k) {
-	return 1-(1-p)**k
-}
+function TCDF(lower, upper, df) {}
