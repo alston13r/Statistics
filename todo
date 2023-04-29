@@ -1,8 +1,8 @@
 Add TI84 functions
 Figure out how to use JSON on web page thingy and add to scripts
 
-
 graphing stuff
+  statistics
     normal curve
     t curve
     x^2 curve
@@ -13,6 +13,9 @@ graphing stuff
     histogram
     density curve
     bar graph
-
+  not statistics
     grid lines
     axis scale
+      ticks at dx and dy?
+      dynamic tick marks?
+    slope field
