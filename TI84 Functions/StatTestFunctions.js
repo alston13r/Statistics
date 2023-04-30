@@ -10,6 +10,9 @@ class EqualityChoice {
   static NotEqual = new EqualityChoice('notEqual')
   static LessThan = new EqualityChoice('lessThan')
   static GreaterThan = new EqualityChoice('greaterThan')
+  constructor(name) {
+    this.name = name
+  }
 }
 
 function ZTest(inputType, μ0, ...rest) {
