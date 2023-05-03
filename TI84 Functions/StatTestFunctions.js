@@ -1,9 +1,9 @@
-function StandErrOneProp(p̂, n) {
-  return sqrt(p̂*(1-p̂)/n)
+function StandErrOneProp(pHat, n) {
+  return sqrt(pHat*(1-pHat)/n)
 }
 
-function StandErrTwoProp(p̂1, n1, p̂2, n2) {
-  return sqrt(p̂1*(1-p̂1)/n1+p̂2*(1-p̂2)/n2)
+function StandErrTwoProp(pHat1, n1, pHat2, n2) {
+  return sqrt(pHat1*(1-pHat1)/n1+pHat2*(1-pHat2)/n2)
 }
 
 function StandErrOneMean(s, n) {
@@ -44,10 +44,10 @@ class EqualityChoice {
     // 10%
     // large counts
       // at least 10 successes and failures
-        // np̂ >= 10   and   n(1-p̂) >= 10
+        // npHat >= 10   and   n(1-pHat) >= 10
 
 function OnePropZInt(x, n, cLevel) {
-  let p̂ = x / n
+  let pHat = x / n
   // p hat +- z*sqrt(phat(1-phat)/n)
   
 }
@@ -69,7 +69,7 @@ function OnePropZTest(p0, x, n, equality) {
     // 10% for both samples
     // large counts
       // at least 10 successes and failures in both groups
-        // n1p̂1, n1(1-p̂1), n2p̂2, n2(1-p̂2) >= 10
+        // n1pHat1, n1(1-pHat1), n2pHat2, n2(1-pHat2) >= 10
 
 function TwoPropZInt(x1, n1, x2, n2, cLevel) {
 
@@ -80,7 +80,7 @@ function TwoPropZInt(x1, n1, x2, n2, cLevel) {
     // random
     // 10% for both samples
     // large counts
-      // n1p̂1, n1(1-p̂1), n2p̂2, n2(1-p̂2) >= 10
+      // n1pHat1, n1(1-pHat1), n2pHat2, n2(1-pHat2) >= 10
 
 function TwoPropZTest(x1, n1, x2, n2, equality) {
 
@@ -124,7 +124,7 @@ function TInterval(input, a, b, c, d) {
         // n >= 30
       // no strong skewness or outliers if n < 30 and pop has unknown shape
 
-function TTest(input, μ0, a, b, c, d) {
+function TTest(input, mu0, a, b, c, d) {
   if (input == InputType.Data) {
     // List = a
     // equality = b

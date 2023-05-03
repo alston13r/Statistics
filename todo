@@ -15,12 +15,35 @@ Probability calculations
   invnorm
   invt
   tcdf
+    use taylor approximations
+      literally normal pdf
+      x^0 1
+      x^2 -1/2
+      x^4 1/8
+      x^6 -1/48
+      x^8 1/384
+      x^10 -1/3840
+      x^12 1/46080
+      x^14 -1/645120
+      x^16 1/10321920
+      literally normal cdf
+      x^1 / 1
+      x^3 / -6
+      x^5 / 40
+      x^7 / -336
+      x^9 / 3456
+      x^11 / -42240
+      x^13 / 599040
+      x^15 / -9676800
+      x^17 / 175472640
+      for the rest???
 
 Chi squared
   rewrite in terms of lists
   maybe even gof for tables or independence :O
 
 graphing stuff
+  add lining and pointing options for regular function graphing
   statistics
     scatter plot
     lin reg
