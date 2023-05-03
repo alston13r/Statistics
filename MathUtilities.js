@@ -1,4 +1,4 @@
-const specialCharacters = ['Σ','μ','σ']
+const specialCharacters = ['Σ','μ','σ','x̄']
 
 class Matrix {
   constructor(r,c) {
@@ -297,11 +297,17 @@ class List {
   fiveNumberSummary() {
     return List.fiveNumberSummary(this)
   }
-  static variance(l, sample) {
+  static variability(l, nSub) {
     let a = l.mean()
-    let n = sample?l.length-1:l.length
+    let n = l.length - nSub
     let m = l.map(x => (x-a)**2)
     return m.sum()/n
+  }
+  variability(nSub) {
+    return List.variability(this, nSub)
+  }
+  static variance(l, sample) {
+    return List.variability(l, sample?l.length-1:l.length)
   }
   variance(sample) {
     return List.variance(this, sample)
