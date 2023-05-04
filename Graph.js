@@ -73,25 +73,49 @@ class Graph {
     this.grapher.ellipse(...this.graphToCanv(x, y), r, r)
     this.grapher.pop()
   }
-  graphFunction(func, color, size) {
+  graphFunction(func, xBounds, color, size, lining, pointing,) {
     this.grapher.push()
-    this.grapher.noStroke()
-    this.grapher.fill(color ? color : this.defaultFunctionColor)
-    this.grapher.rectMode = RectMode.Center
+    let c = color ? color : this.defaultFunctionColor
     let s = size ? size : this.defaultFunctionSize
-    let canvasWidth = this.getCanvasSize()[0]
-    for (let i=-5; i<canvasWidth+5; i++) {
-      let functionX = this.canvToGraphX(i)
-      let mappedY = this.graphToCanvY(func(functionX))
-      this.pixel(i, mappedY, s)
+    this.grapher.rectMode = RectMode.Center
+    if (pointing) this.grapher.fill(c)
+    else this.grapher.noFill()
+    if (lining) {
+      this.grapher.stroke(c)
+      this.grapher.lineWidth = s
+    } else this.grapher.noStroke()
+    if (lining || pointing) {
+      let prev = []
+      let lower, upper
+      if (xBounds) {
+        lower = this.graphToCanvX(xBounds[0])
+        upper = this.graphToCanvX(xBounds[1])
+      } else {
+        lower = -5
+        upper = this.getCanvasSize()[0]+5
+      }
+      for (let i=lower; i<upper; i++) {
+        let currX = this.canvToGraphX(i)
+        let currY = func(currX)
+        if (lining) {
+          if (prev.length != 0) {
+            this.grapher.line(...prev, i, this.graphToCanvY(currY))
+          }
+          prev = [i, this.graphToCanvY(currY)]
+        }
+        if (pointing) {
+          this.pixel(i, this.graphToCanvY(currY), s)
+        }
+      }
     }
     this.grapher.pop()
   }
-  graphParametric(xFunc, yFunc, tLower, tUpper, density, lining, pointing, color, size) {
+  graphParametric(xFunc, yFunc, tLower, tUpper, density, color, size, lining, pointing,) {
     this.grapher.push()
     let d = density ? density : this.defaultParametricDensity
     let c = color ? color : this.defaultParametricColor
     let s = size ? size : this.defaultParametricSize
+    this.grapher.rectMode = RectMode.Center
     if (pointing) this.grapher.fill(c)
     else this.grapher.noFill()
     if (lining) {
@@ -119,19 +143,19 @@ class Graph {
   }
   graphNormalCurve(mu, stdev, color, size) {
     let fx = x => 1/(stdev*ROOT_TWO_PI)*exp(-0.5*((x-mu)/stdev)**2)
-    this.graphFunction(fx, color, size)
+    this.graphFunction(fx, null, color, size, true, false)
   }
   graphTCurve(df, color, size) {
     let c1 = math.gamma((df+1)/2)/(sqrt(df*PI)*math.gamma(df/2))
     let c2 = -(df+1)/2
     let fx = x => c1*(1+x**2/df)**c2
-    this.graphFunction(fx, color, size)
+    this.graphFunction(fx, null, color, size, true, false)
   }
   graphChi2Curve(df, color, size) {
     let a = df/2-1
     let b = 2**(df/2)*math.gamma(df/2)
     let fx = x => x**a*exp(-x/2)/b
-    this.graphFunction(x => x>=0?fx(x):0, color, size)
+    this.graphFunction(x => x>=0?fx(x):0, [0,this.xUpper], color, size, true, false)
   }
   drawAxes(color, width) {
     let c = color ? color : this.defaultAxisColor
