@@ -1,3 +1,87 @@
+// rewrite to have 30 decimal precision with 5 overflow for rounding errors
+
+class PreciseNumber {
+  constructor(base, ...decimals) {
+    if (typeof base === 'string') {
+      let split = base.split('.')
+      let len = split.length
+      this.decimals = []
+      if (len == 2) {
+        this.base = split[0]=='' ? 0 : parseInt(split[0])
+        if (split[1] == '') {
+          this.decimals[0] = 0
+        } else {
+          for (let c of split[1]) this.decimals.push(parseInt(c))
+        }
+      } else if (len == 1) {
+        this.decimals[0] = 0
+        this.base = split[0]=='' ? 0 : parseInt(split[0])
+      } else {
+        this.base = 0
+        this.decimals = [0]
+      }
+    } else if (typeof base === 'number') {
+      this.base = base || 0
+      if (decimals) this.decimals = [...decimals]
+      else this.decimals = [0]
+    } else {
+      this.base = 0
+      this.decimals = [0]
+    }
+    this.fix()
+  }
+  copy() {
+    return new PreciseNumber(this.base, this.decimals).fix()
+  }
+  get decLen() {
+    return this.decimals.length
+  }
+  fix() {
+    if (this.decimals.length == 0) {
+      this.decimals = [0]
+    }
+    // shift all decimal values to the right
+    let bumpDown = 0
+    if (this.base > floor(this.base)) {
+      bumpDown = (this.base-floor(this.base))*10
+      this.base = floor(this.base)
+    }
+    for (let i=0;i<this.decLen;i++) {
+      this.decimals[i] += bumpDown
+      let curr = this.decimals[i]
+      if (curr > floor(curr)) {
+        bumpDown = (curr-floor(curr))*10
+        this.decimals[i] = floor(curr)
+      } else {
+        bumpDown = 0
+      }
+    }
+    // shift anything at least 10 to the left
+    let bumpUp = 0
+    for (let i=this.decLen-1;i>=0;i--) {
+      this.decimals[i] += bumpUp
+      let curr = this.decimals[i]
+      if (curr >= 10) {
+        bumpUp = floor(curr/10)
+        this.decimals[i] %= 10
+      } else {
+        bumpUp = 0
+      }
+    }
+    // clear any uneccesary 0s from the right
+    this.base += bumpUp
+    for (let i=this.decLen-1;i>0;i--) {
+      if (this.decimals[i] == 0) this.decimals.pop()
+      else break
+    }
+    return this
+  }
+  toString() {
+    return this.base+'.'+this.decimals.join('')
+  }
+}
+
+
 class LongNumber {
   constructor(base, ...decimals) {
     this.base = base || 0
@@ -46,6 +130,12 @@ class LongNumber {
     }
     this.fix()
     return this
+  }
+  mul(a) {
+    
+  }
+  div(a) {
+    
   }
   fix() {
     if (this.decimals.length == 0) {
