@@ -16,7 +16,9 @@ function Chi2PDF(x, df) {
   return x>=0?fx(x):0
 }
 
-function Chi2CDF(lower, upper, df) {}
+function Chi2CDF(lower, upper, df) {
+
+}
 
 function GeometricPDF(p, x) {
   return p*(1-p)**(x-1)
@@ -37,6 +39,14 @@ function NormalPDF(x,mu,stdev) {
 function NormalCDF(a,b,c,d) {
 	if (d == undefined) return 0.5*(1+math.erf((a-b)/(c*Math.sqrt(2))))
 	else return NormalCDF(b,c,d)-NormalCDF(a,c,d)
+}
+
+let myErfApprox = new Polynomial(0, 1/ROOT_TWO_PI, [1,-1/6,1/40,-1/336,1/3456,-1/42240,1/599040,-1/9676800,1/175472640], [1,3,5,7,9,11,13,15,17])
+
+function ModifiedNormalCDF(a, b, c, d) {
+  let z1 = ZScore(a, c, d)
+  let z2 = ZScore(b, c, d)
+  return myErfApprox.fn(z2)-myErfApprox.fn(z1)
 }
 
 function TPDF(x, df) {
