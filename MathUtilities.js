@@ -372,6 +372,7 @@ const sqrt = x => singleOrArray(Math.sqrt, x)
 const exp = x => singleOrArray(Math.exp, x)
 const abs = x => singleOrArray(Math.abs, x)
 
+
 const ROOT_PI = sqrt(PI)
 const ROOT_HALF_PI = sqrt(HALF_PI)
 const ROOT_TWO_PI = sqrt(TWO_PI)
@@ -393,6 +394,7 @@ const acosh = (x, d) => singleOrArray((x, d) => !d?Math.acosh(x):radToDeg(acosh(
 const atanh = (x, d) => singleOrArray((x, d) => !d?Math.atanh(x):radToDeg(atanh(x)), x, d)
 
 const round = (x, p) => singleOrArray((x, a) => Math.round(x*a)/a, x, 10**(p!=undefined?p:0))
+const trunc = (x, p) => singleOrArray((x, a) => Math.trunc(x*a)/a, x, 10**(p!=undefined?p:0))
 
 function rand(a, b, c) {
   if (c == undefined) {
