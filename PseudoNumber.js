@@ -1,4 +1,3 @@
-// check negatives
 // subtraction
 // multiplication
 // division
@@ -26,6 +25,11 @@ class PseudoNumber {
     PseudoNumber.clean(this)
   }
   static clean(n) {
+    let sf = false
+    if (n.pseudo.indexOf('-') != -1) {
+      n.pseudo = n.pseudo.split('-')[1]
+      sf = true
+    }
     let newD = ''
     if (n.hasDecimals()) {
       let dec = n.getDecimals()
@@ -37,18 +41,39 @@ class PseudoNumber {
     }
     let newB = ''
     let baseF = true
-    for (let c of n.getBase()) {
-      if (baseF && c!=='0') baseF = false
-      if (!baseF) newB += c
+    let base = n.getBase()
+    for (let i=base.length-1; i>0; i--) {
+      if (baseF && base[i]!=='0') baseF = false
+      if (!baseF) newB += base[i]
     }
+    if (newB == '') newB = '0'
     n.pseudo = newB+(newD.length>0?'.'+newD:'')
+    if (n.isZero()) {
+      n.sign = '+'
+      n.pseudo = '0'
+    }
+    if (sf) n.flipSign()
     return n
   }
   clean() {
-    return PseudoNumber.clean(this.copy())
+    return PseudoNumber.clean(this)
+  }
+  static copyFrom(a, b) {
+    if (typeof a === 'number') a = new PseudoNumber(a)
+    if (typeof b === 'number') b = new PseudoNumber(b)
+    a.pseudo = b.pseudo
+    a.sign = b.sign
+    return a
   }
   copy() {
     return new PseudoNumber(this.toString())
+  }
+  static isZero(n) {
+    if (typeof n === 'number') n = new PseudoNumber(n)
+    if (n.pseudo === '') return true
+  }
+  isZero() {
+    return PseudoNumber.isZero(this)
   }
   static abs(n) {
     if (typeof n === 'number') n = new PseudoNumber(n)
@@ -58,107 +83,216 @@ class PseudoNumber {
   abs() {
     return PseudoNumber.abs(this.copy())
   }
-  static add(a, b) {
-    // a and b must be positive to add
-
-
+  static flipSign(n) {
+    if (typeof n === 'number') n = new PseudoNumber(n)
+    n.sign = n.isPositive() ? '-' : '+'
+    return n
+  }
+  flipSign() {
+    return PseudoNumber.flipSign(this.copy())
+  }
+  static equals(a, b) {
     if (typeof a === 'number') a = new PseudoNumber(a)
     if (typeof b === 'number') b = new PseudoNumber(b)
 
-    PseudoNumber.clean(a)
-    PseudoNumber.clean(b)
+    return a.pseudo == b.pseudo && a.sign == b.sign
+  }
+  equals(n) {
+    return PseudoNumber.equals(this, n)
+  }
+  static count = 0
+  static greaterThan(a, b) {
+    if (typeof a === 'number') a = new PseudoNumber(a)
+    if (typeof b === 'number') b = new PseudoNumber(b)
 
-    let aDec = a.hasDecimals()
-    let bDec = b.hasDecimals()
-    let aBase = a.getBase()
-    let bBase = b.getBase()
+    let ap = a.isPositive()
+    let bp = b.isPositive()
+    if (ap && !bp) return true
+    if (!ap && bp) return false
+    if (a.equals(b)) return false
+    if (ap) {
+      let aBase = a.getBase()
+      let bBase = b.getBase()
+      if (aBase.length > bBase.length) return true
+      if (bBase.length > aBase.length) return false
+      for (let i=0; i<aBase.length; i++) {
+        let ad = aBase[i]
+        let bd = bBase[i]
+        if (ad == bd) continue
+        return ad > bd
+      }
+      let aDec = a.hasDecimals()
+      let bDec = b.hasDecimals()
+      if (aDec && !bDec) return true
+      if (!aDec && bDec) return false
+      let aDecs = a.getDecimals()
+      let bDecs = b.getDecimals()
+      let aDecLen = aDecs.length
+      let bDecLen = bDecs.length
+      let minDecLen = Math.min(aDecLen, bDecLen)
+      for (let i=0; i<minDecLen; i++) {
+        let ad = aDecs[i]
+        let bd = bDecs[i]
+        if (ad == bd) continue
+        return ad > bd
+      }
+      return aDecLen > bDecLen
+    } else {
+      return PseudoNumber.greaterThan(b.flipSign(), a.flipSign())
+    }
+  }
+  greaterThan(n) {
+    return PseudoNumber.greaterThan(this, n)
+  }
+  static greaterThanEqualTo(a, b) {
+    return PseudoNumber.equals(a, b) || PseudoNumber.greaterThan(a, b)
+  }
+  greaterThanEqualTo(n) {
+    return PseudoNumber.greaterThanEqualTo(this, n)
+  }
+  static lessThan(a, b) {
+    return PseudoNumber.greaterThan(b, a)
+  }
+  lessThan(n) {
+    return PseudoNumber.lessThan(this, n)
+  }
+  static lessThanEqualTo(a, b) {
+    return PseudoNumber.equals(a, b) || PseudoNumber.lessThan(a, b)
+  }
+  lessThanEqualTo(n) {
+    return PseudoNumber.lessThanEqualTo(this, n)
+  }
+  static add(a, b) {
+    if (typeof a === 'number') a = new PseudoNumber(a)
+    if (typeof b === 'number') b = new PseudoNumber(b)
 
-    let c = 0
-    let newD = ''
-    if (aDec || bDec) {
-      let aDecs = aDec ? a.getDecimals() : '0'
-      let bDecs = bDec ? b.getDecimals() : '0'
-      let maxD = Math.max(aDecs.length, bDecs.length)
-      for (let i=aDecs.length; i<maxD; i++) aDecs += '0'
-      for (let i=bDecs.length; i<maxD; i++) bDecs += '0'
-      for (let i=maxD-1; i>=0; i--) {
-        let s = parseInt(aDecs[i]) + parseInt(bDecs[i]) + c
-        if (s >= 10) {
-          c = floor(s/10)
-          s %= 10
-        } else c = 0
-        newD = s+newD
+    let as = a.isPositive()
+    let bs = b.isPositive()
+    if (as) {
+      if (bs) {
+        PseudoNumber.clean(a)
+        PseudoNumber.clean(b)
+
+        let aDec = a.hasDecimals()
+        let bDec = b.hasDecimals()
+        let aBase = a.getBase()
+        let bBase = b.getBase()
+
+        let c = 0
+        let newD = ''
+        if (aDec || bDec) {
+          let aDecs = aDec ? a.getDecimals() : '0'
+          let bDecs = bDec ? b.getDecimals() : '0'
+          let maxD = Math.max(aDecs.length, bDecs.length)
+          for (let i=aDecs.length; i<maxD; i++) aDecs += '0'
+          for (let i=bDecs.length; i<maxD; i++) bDecs += '0'
+          for (let i=maxD-1; i>=0; i--) {
+            let s = parseInt(aDecs[i]) + parseInt(bDecs[i]) + c
+            if (s >= 10) {
+              c = floor(s/10)
+              s %= 10
+            } else c = 0
+            newD = s+newD
+          }
+        }
+
+        let newB = ''
+        let maxB = Math.max(aBase.length, bBase.length)
+        for (let i=aBase.length; i<maxB; i++) aBase = '0'+aBase
+        for (let i=bBase.length; i<maxB; i++) bBase = '0'+bBase
+        for (let i=maxB-1; i>=0; i--) {
+          let s = parseInt(aBase[i]) + parseInt(bBase[i]) + c
+          if (s >= 10) {
+            c = floor(s/10)
+            s %= 10
+          } else c = 0
+          newB = s+newB
+        }
+        newB = c+newB
+        a.pseudo = newB+(newD.length>0?'.'+newD:'')
+        return PseudoNumber.clean(a)
+      } else {
+        return PseudoNumber.sub(a, b.flipSign())
+      }
+    } else {
+      if (bs) {
+        let c = PseudoNumber.sub(b.copy(), a.flipSign())
+        return PseudoNumber.copyFrom(a, c)
+      } else {
+        return PseudoNumber.add(a.flipSign(), b.flipSign()).flipSign()
       }
     }
-
-    let newB = ''
-    let maxB = Math.max(aBase.length, bBase.length)
-    for (let i=aBase.length; i<maxB; i++) aBase = '0'+aBase
-    for (let i=bBase.length; i<maxB; i++) bBase = '0'+bBase
-    for (let i=maxB-1; i>=0; i--) {
-      let s = parseInt(aBase[i]) + parseInt(bBase[i]) + c
-      if (s >= 10) {
-        c = floor(s/10)
-        s %= 10
-      } else c = 0
-      newB = s+newB
-    }
-    newB = c+newB
-
-    a.pseudo = newB+(newD.length>0?'.'+newD:'')
-    return PseudoNumber.clean(a)
   }
   add(n) {
     return PseudoNumber.add(this.copy(), n)
   }
   static sub(a, b) {
-    // a and b must be positive to subtract
-
     if (typeof a === 'number') a = new PseudoNumber(a)
     if (typeof b === 'number') b = new PseudoNumber(b)
 
-    PseudoNumber.clean(a)
-    PseudoNumber.clean(b)
+    let as = a.isPositive()
+    let bs = b.isPositive()
+    if (as) {
+      if (bs) {
+        PseudoNumber.clean(a)
+        PseudoNumber.clean(b)
 
-    let aDec = a.hasDecimals()
-    let bDec = b.hasDecimals()
-    let aBase = a.getBase()
-    let bBase = b.getBase()
-
-    // let c = 0
-    // let newD = ''
-    // if (aDec || bDec) {
-    //   let aDecs = aDec ? a.getDecimals() : '0'
-    //   let bDecs = bDec ? b.getDecimals() : '0'
-    //   let maxD = Math.max(aDecs.length, bDecs.length)
-    //   for (let i=aDecs.length; i<maxD; i++) aDecs += '0'
-    //   for (let i=bDecs.length; i<maxD; i++) bDecs += '0'
-    //   for (let i=maxD-1; i>=0; i--) {
-    //     let s = parseInt(aDecs[i]) + parseInt(bDecs[i]) + c
-    //     if (s >= 10) {
-    //       c = floor(s/10)
-    //       s %= 10
-    //     } else c = 0
-    //     newD = s+newD
-    //   }
-    // }
-
-    // let newB = ''
-    // let maxB = Math.max(aBase.length, bBase.length)
-    // for (let i=aBase.length; i<maxB; i++) aBase = '0'+aBase
-    // for (let i=bBase.length; i<maxB; i++) bBase = '0'+bBase
-    // for (let i=maxB-1; i>=0; i--) {
-    //   let s = parseInt(aBase[i]) + parseInt(bBase[i]) + c
-    //   if (s >= 10) {
-    //     c = floor(s/10)
-    //     s %= 10
-    //   } else c = 0
-    //   newB = s+newB
-    // }
-    // newB = c+newB
-
-    a.pseudo = newB+(newD.length>0?'.'+newD:'')
-    return PseudoNumber.clean(a)
+        if (a.equals(b)) PseudoNumber.copyFrom(a, 0)
+        else if (a.greaterThan(b)) {
+          let aDec = a.hasDecimals()
+          let bDec = b.hasDecimals()
+          let aBase = a.getBase()
+          let bBase = b.getBase()
+  
+          let borrow = 0
+          let newD = ''
+          if (aDec || bDec) {
+            let aDecs = aDec ? a.getDecimals() : '0'
+            let bDecs = bDec ? b.getDecimals() : '0'
+            let maxD = Math.max(aDecs.length, bDecs.length)
+            for (let i=aDecs.length; i<maxD; i++) aDecs += '0'
+            for (let i=bDecs.length; i<maxD; i++) bDecs += '0'
+            for (let i=maxD-1; i>=0; i--) {
+              let d = parseInt(aDecs[i]) - parseInt(bDecs[i]) - borrow
+              if (d < 0) {
+                borrow = 1
+                d += 10
+              } else borrow = 0
+              newD = d+newD
+            }
+          }
+          let newB = ''
+          let maxB = Math.max(aBase.length, bBase.length)
+          for (let i=aBase.length; i<maxB; i++) aBase = '0'+aBase
+          for (let i=bBase.length; i<maxB; i++) bBase = '0'+bBase
+          for (let i=maxB-1; i>=0; i--) {
+            let d = parseInt(aBase[i] - parseInt(bBase[i])) - borrow
+            if (d < 0) {
+              borrow = 1
+              d += 10
+            } else borrow = 0
+            newB = d+newB
+          }
+          a.pseudo = newB+(newD.length>0?'.'+newD:'')
+          return PseudoNumber.clean(a)
+        } else {
+          let c = PseudoNumber.sub(b.copy(), a).flipSign()
+          return PseudoNumber.copyFrom(a, c)
+        }
+      } else {
+        return PseudoNumber.add(a, b.flipSign())
+      }
+    } else {
+      if (bs) {
+        let c = PseudoNumber.add(a.flipSign(), b.copy()).flipSign()
+        return PseudoNumber.copyFrom(a, c)
+      } else {
+        return PseudoNumber.sub(b.flipSign(), a.flipSign())
+      }
+    }
+  }
+  sub(n) {
+    return PseudoNumber.sub(this.copy(), n)
   }
   static getSplit(n) {
     if (typeof n === 'number') n = new PseudoNumber(n)
@@ -210,6 +344,6 @@ class PseudoNumber {
     return this.sign == '-'
   }
   toString() {
-    return this.pseudo
+    return (this.isNegative()?'-':'')+this.pseudo
   }
 }
