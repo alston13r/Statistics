@@ -6,4 +6,5 @@ grapher.drawAxes()
 
 grapher.graphFunction(myErfApprox.fn, [-5,0], true, false, '#0000ff')
 
-console.log(PseudoNumber.sub(4.323, 4.35))
+console.log(PseudoNumber.mul(541.1234, 5427.32))
+console.log(541.1234*5427.32)

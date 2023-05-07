@@ -139,6 +139,15 @@ class Matrix {
   numerize() {
     return Matrix.numerize(this.copy())
   }
+  static latticeMulDiagonalSum(m) {
+    let res = []
+    for (let i=0; i<m.r+m.c-1; i++) res[i] = 0
+    m.map((e, i, j) => res[i+j] += e)
+    return res
+  }
+  latticeMulDiagonalSum() {
+    return Matrix.latticeMulDiagonalSum(this)
+  }
 }
 
 class List {

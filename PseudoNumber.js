@@ -1,5 +1,3 @@
-// subtraction
-// multiplication
 // division
 // power
 // rounding
@@ -42,7 +40,7 @@ class PseudoNumber {
     let newB = ''
     let baseF = true
     let base = n.getBase()
-    for (let i=base.length-1; i>0; i--) {
+    for (let i=0; i<base.length; i++) {
       if (baseF && base[i]!=='0') baseF = false
       if (!baseF) newB += base[i]
     }
@@ -100,7 +98,6 @@ class PseudoNumber {
   equals(n) {
     return PseudoNumber.equals(this, n)
   }
-  static count = 0
   static greaterThan(a, b) {
     if (typeof a === 'number') a = new PseudoNumber(a)
     if (typeof b === 'number') b = new PseudoNumber(b)
@@ -293,6 +290,55 @@ class PseudoNumber {
   }
   sub(n) {
     return PseudoNumber.sub(this.copy(), n)
+  }
+  static mul(a, b) {
+    if (typeof a === 'number') a = new PseudoNumber(a)
+    if (typeof b === 'number') b = new PseudoNumber(b)
+    let decimals = 0
+    let top = []
+    for (let d of a.getBase()) top.push(parseInt(d))
+    if (a.hasDecimals()) {
+      let dec = a.getDecimals()
+      decimals += dec.length
+      for (let d of dec) top.push(parseInt(d))
+    }
+    let side = []
+    for (let d of b.getBase()) side.push(parseInt(d))
+    if (b.hasDecimals()) {
+      let dec = b.getDecimals()
+      decimals += dec.length
+      for (let d of dec) side.push(parseInt(d))
+    }
+    let bottomLattice = new Matrix(side.length, top.length)
+    Matrix.map(bottomLattice, (e, i, j) => top[j]*side[i])
+    let topLattice = bottomLattice.map(e => floor(e/10))
+    Matrix.map(bottomLattice, e => e%10)
+
+    let botSum = bottomLattice.latticeMulDiagonalSum()
+    let topSum = topLattice.latticeMulDiagonalSum()
+
+    let res = [topSum[0]]
+    for (let i=1; i<top.length+side.length-1; i++) res[i] = botSum[i-1]+topSum[i]
+    res.push(botSum[top.length+side.length-2])
+    for (let i=res.length-1; i>=0; i--) {
+      if (res[i] >= 10) {
+        let c = floor(res[i]/10)
+        res[i] %= 10
+        if (i == 0) {
+          res.splice(i, 0, 0)
+          i++
+        }
+        res[i-1] += c
+      }
+    }
+    let n = res.join('')
+    let c = new PseudoNumber(n.slice(0, n.length-decimals)+'.'+n.slice(n.length-decimals))
+    if (a.isPositive() != b.isPositive()) PseudoNumber.flipSign(c)
+
+    return PseudoNumber.copyFrom(a, c)
+  }
+  mul(n) {
+    return PseudoNumber.mul(this.copy(), n)
   }
   static getSplit(n) {
     if (typeof n === 'number') n = new PseudoNumber(n)
