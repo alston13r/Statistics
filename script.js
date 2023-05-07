@@ -6,13 +6,14 @@ grapher.drawAxes()
 
 grapher.graphFunction(myErfApprox.fn, [-5,0], true, false, '#0000ff')
 
-let a = new PreciseNumber(5+rand())
-let b = new PreciseNumber(5+rand())
+let a = new PseudoNumber('52.7235')
+let b = new PseudoNumber('0057.4525')
 
-let c = 5+rand()
-console.log(c, new PreciseNumber(c.toString()))
+console.log(a.toString()+' + '+b.toString())
+PseudoNumber.add(a,b)
 
-console.log(a.toString())
-console.log(b.toString())
+console.log(a)
 
-// console.log(5+rand())
+console.log(PseudoNumber.add(12, 13))
+
+// console.log(52.7235 + 57.4526)
