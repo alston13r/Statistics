@@ -1,3 +1,11 @@
+class GraphingOptions {
+  static Lining = new GraphingOptions('line')
+  static Pointing = new GraphingOptions('point')
+  static LandP = new GraphingOptions('landp')
+  constructor(name) {
+    this.name = name
+  }
+}
 class Graph {
   constructor(canvas, xRange, yRange, canvasSize, options) {
     this.grapher = new GraphingUtility(canvas, canvasSize)
@@ -73,39 +81,46 @@ class Graph {
     this.grapher.ellipse(...this.graphToCanv(x, y), r, r)
     this.grapher.pop()
   }
-  graphFunction(func, xBounds, color, size, lining, pointing,) {
+  graphFunction(func, xBounds, color, size, plotOptions) {
+    let lining = plotOptions == GraphingOptions.Lining || plotOptions == GraphingOptions.LandP
+    let pointing = plotOptions == GraphingOptions.Pointing || plotOptions == GraphingOptions.LandP
     this.grapher.push()
     let c = color ? color : this.defaultFunctionColor
     let s = size ? size : this.defaultFunctionSize
     this.grapher.rectMode = RectMode.Center
-    if (pointing) this.grapher.fill(c)
-    else this.grapher.noFill()
+    
     if (lining) {
       this.grapher.stroke(c)
       this.grapher.lineWidth = s
-    } else this.grapher.noStroke()
-    if (lining || pointing) {
-      let prev = []
-      let lower, upper
-      if (xBounds) {
-        lower = this.graphToCanvX(xBounds[0])
-        upper = this.graphToCanvX(xBounds[1])
-      } else {
-        lower = -5
-        upper = this.getCanvasSize()[0]+5
+    } else {
+      this.grapher.noStroke()
+    }
+    if (pointing) {
+      this.grapher.fill(c)
+    } else {
+      this.grapher.noFill()
+    }
+
+    let prev = []
+    let lower, upper
+    if (xBounds) {
+      lower = this.graphToCanvX(xBounds[0])
+      upper = this.graphToCanvX(xBounds[1])
+    } else {
+      lower = -5
+      upper = this.getCanvasSize()[0]+5
+    }
+    for (let i=lower; i<upper; i++) {
+      let currX = this.canvToGraphX(i)
+      let currY = func(currX)
+      if (lining) {
+        if (prev.length != 0) {
+          this.grapher.line(...prev, i, this.graphToCanvY(currY))
+        }
+        prev = [i, this.graphToCanvY(currY)]
       }
-      for (let i=lower; i<upper; i++) {
-        let currX = this.canvToGraphX(i)
-        let currY = func(currX)
-        if (lining) {
-          if (prev.length != 0) {
-            this.grapher.line(...prev, i, this.graphToCanvY(currY))
-          }
-          prev = [i, this.graphToCanvY(currY)]
-        }
-        if (pointing) {
-          this.pixel(i, this.graphToCanvY(currY), s)
-        }
+      if (pointing) {
+        this.pixel(i, this.graphToCanvY(currY), s)
       }
     }
     this.grapher.pop()
