@@ -57,8 +57,8 @@ class PseudoNumber {
     return PseudoNumber.clean(this)
   }
   static copyFrom(a, b) {
-    if (typeof a === 'number') a = new PseudoNumber(a)
-    if (typeof b === 'number') b = new PseudoNumber(b)
+    a = PseudoNumber.EnsurePseudo(a)
+    b = PseudoNumber.EnsurePseudo(b)
     a.pseudo = b.pseudo
     a.sign = b.sign
     return a
@@ -66,15 +66,21 @@ class PseudoNumber {
   copy() {
     return new PseudoNumber(this.toString())
   }
+  static EnsurePseudo(x) {
+    if (typeof x === 'number' || typeof x === 'string') {
+      return new PseudoNumber(x)
+    }
+    if (x instanceof PseudoNumber) return x
+  }
   static isZero(n) {
-    if (typeof n === 'number') n = new PseudoNumber(n)
+    n = PseudoNumber.EnsurePseudo(n)
     if (n.pseudo === '') return true
   }
   isZero() {
     return PseudoNumber.isZero(this)
   }
   static abs(n) {
-    if (typeof n === 'number') n = new PseudoNumber(n)
+    n = PseudoNumber.EnsurePseudo(n)
     n.sign = '+'
     return n
   }
@@ -82,7 +88,7 @@ class PseudoNumber {
     return PseudoNumber.abs(this.copy())
   }
   static flipSign(n) {
-    if (typeof n === 'number') n = new PseudoNumber(n)
+    n = PseudoNumber.EnsurePseudo(n)
     n.sign = n.isPositive() ? '-' : '+'
     return n
   }
@@ -90,8 +96,8 @@ class PseudoNumber {
     return PseudoNumber.flipSign(this.copy())
   }
   static equals(a, b) {
-    if (typeof a === 'number') a = new PseudoNumber(a)
-    if (typeof b === 'number') b = new PseudoNumber(b)
+    a = PseudoNumber.EnsurePseudo(a)
+    b = PseudoNumber.EnsurePseudo(b)
 
     return a.pseudo == b.pseudo && a.sign == b.sign
   }
@@ -99,8 +105,8 @@ class PseudoNumber {
     return PseudoNumber.equals(this, n)
   }
   static greaterThan(a, b) {
-    if (typeof a === 'number') a = new PseudoNumber(a)
-    if (typeof b === 'number') b = new PseudoNumber(b)
+    a = PseudoNumber.EnsurePseudo(a)
+    b = PseudoNumber.EnsurePseudo(b)
 
     let ap = a.isPositive()
     let bp = b.isPositive()
@@ -160,8 +166,8 @@ class PseudoNumber {
     return PseudoNumber.lessThanEqualTo(this, n)
   }
   static add(a, b) {
-    if (typeof a === 'number') a = new PseudoNumber(a)
-    if (typeof b === 'number') b = new PseudoNumber(b)
+    a = PseudoNumber.EnsurePseudo(a)
+    b = PseudoNumber.EnsurePseudo(b)
 
     let as = a.isPositive()
     let bs = b.isPositive()
@@ -224,8 +230,8 @@ class PseudoNumber {
     return PseudoNumber.add(this.copy(), n)
   }
   static sub(a, b) {
-    if (typeof a === 'number') a = new PseudoNumber(a)
-    if (typeof b === 'number') b = new PseudoNumber(b)
+    a = PseudoNumber.EnsurePseudo(a)
+    b = PseudoNumber.EnsurePseudo(b)
 
     let as = a.isPositive()
     let bs = b.isPositive()
@@ -292,8 +298,8 @@ class PseudoNumber {
     return PseudoNumber.sub(this.copy(), n)
   }
   static mul(a, b) {
-    if (typeof a === 'number') a = new PseudoNumber(a)
-    if (typeof b === 'number') b = new PseudoNumber(b)
+    a = PseudoNumber.EnsurePseudo(a)
+    b = PseudoNumber.EnsurePseudo(b)
     let decimals = 0
     let top = []
     for (let d of a.getBase()) top.push(parseInt(d))
@@ -340,54 +346,66 @@ class PseudoNumber {
   mul(n) {
     return PseudoNumber.mul(this.copy(), n)
   }
+  static div(a, b) {
+    a = PseudoNumber.EnsurePseudo(a)
+    b = PseudoNumber.EnsurePseudo(b)
+    console.log(a, b)
+  }
+  div(n) {
+    return PseudoNumber.div(this.copy(), n)
+  }
   static getSplit(n) {
-    if (typeof n === 'number') n = new PseudoNumber(n)
+    n = PseudoNumber.EnsurePseudo(n)
     return n.pseudo.split('.')
   }
   getSplit() {
     return PseudoNumber.getSplit(this)
   }
   static hasDecimals(n) {
-    if (typeof n === 'number') n = new PseudoNumber(n)
+    n = PseudoNumber.EnsurePseudo(n)
     return n.getSplit().length == 2
   }
   hasDecimals() {
     return PseudoNumber.hasDecimals(this)
   }
   static getBase(n) {
-    if (typeof n === 'number') n = new PseudoNumber(n)
+    n = PseudoNumber.EnsurePseudo(n)
     return n.getSplit()[0]
   }
   getBase() {
     return PseudoNumber.getBase(this)
   }
   static getDecimals(n) {
-    if (typeof n === 'number') n = new PseudoNumber(n)
+    n = PseudoNumber.EnsurePseudo(n)
     return n.hasDecimals() ? n.getSplit()[1] : '0'
   }
   getDecimals() {
     return PseudoNumber.getDecimals(this)
   }
   static getSign(n) {
-    if (typeof n === 'number') n = new PseudoNumber(n)
+    n = PseudoNumber.EnsurePseudo(n)
     return n.sign
   }
   getSign() {
     return this.sign
   }
   static isPositive(n) {
-    if (typeof n === 'number') n = new PseudoNumber(n)
+    n = PseudoNumber.EnsurePseudo(n)
     return n.sign == '+'
   }
   isPositive() {
     return this.sign == '+'
   }
   static isNegative(n) {
-    if (typeof n === 'number') n = new PseudoNumber(n)
+    n = PseudoNumber.EnsurePseudo(n)
     return n.sign == '-'
   }
   isNegative() {
     return this.sign == '-'
+  }
+  toNumber() {
+    if (this.hasDecimals()) return parseFloat(this.pseudo)
+    return parseInt(this.pseudo)
   }
   toString() {
     return (this.isNegative()?'-':'')+this.pseudo
