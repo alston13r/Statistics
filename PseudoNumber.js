@@ -240,7 +240,7 @@ class PseudoNumber {
         PseudoNumber.clean(a)
         PseudoNumber.clean(b)
 
-        if (a.equals(b)) PseudoNumber.copyFrom(a, 0)
+        if (a.equals(b)) return PseudoNumber.copyFrom(a, 0)
         else if (a.greaterThan(b)) {
           let aDec = a.hasDecimals()
           let bDec = b.hasDecimals()
@@ -346,13 +346,69 @@ class PseudoNumber {
   mul(n) {
     return PseudoNumber.mul(this.copy(), n)
   }
-  static div(a, b) {
+  static div(a, b, p, internal) {
     a = PseudoNumber.EnsurePseudo(a)
     b = PseudoNumber.EnsurePseudo(b)
-    console.log(a, b)
+
+    if (internal) {
+      let quotient, remainder
+      if (a.equals(b)) {
+        quotient = 1
+        remainder = 0
+      } else if (a.lessThan(b)) {
+        quotient = 0
+        remainder = a.getBase()
+      } else {
+        let q = 2
+        let t = b.mul(q)
+        while(t.lessThanEqualTo(a)) {
+          t = b.mul(++q)
+        }
+        quotient = q-1
+        remainder = a.sub(b.mul(quotient))
+      }
+      return [quotient.toString(), remainder.toString()]
+    }
+
+    let precision = p || 0
+    if (a.hasDecimals() && precision == 0) {
+      precision = a.getDecimals().length
+    }
+    if (b.hasDecimals() && precision == 0) {
+      precision = b.getDecimals().length
+    }
+    
+    let decimals = 0
+    if (a.hasDecimals()) {
+      let dec = a.getDecimals()
+      decimals += dec.length
+    }
+    if (b.hasDecimals()) {
+      let dec = b.getDecimals()
+      decimals += dec.length
+    }
+
+    // calc out to precision + 1 and then round to precision
+    let base = a.getBase()
+    let decs = a.getDecimals()
+
+    console.log(base, decs)
+    let res = ''
+    let rem = 0
+    // for (let i=0; i<a.pseudo.length; i++) {
+      
+    // }
+
+    
+    
+    return 'p: '+precision+'   d: '+decimals
+    // let c = new PseudoNumber(res.slice(0, res.length-decimals)+'.'+res.slice(res.length-decimals))
+    // if (a.isPositive() != b.isPositive()) PseudoNumber.flipSign(c)
+
+    // return PseudoNumber.copyFrom(a, c)
   }
-  div(n) {
-    return PseudoNumber.div(this.copy(), n)
+  div(n, p) {
+    return PseudoNumber.div(this.copy(), n, p)
   }
   static getSplit(n) {
     n = PseudoNumber.EnsurePseudo(n)
