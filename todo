@@ -4,6 +4,17 @@ Add TI84 functions
   invt
   tcdf
 
+PseudoNumber
+  division
+  power
+  rounding
+  flooring
+  truncating
+  ceiling
+  square root
+  nth root
+  trig
+
 Add area for all the functions and descriptions
 Add table that shows certain values and calculations
 
