@@ -381,6 +381,9 @@ const sqrt = x => singleOrArray(Math.sqrt, x)
 const exp = x => singleOrArray(Math.exp, x)
 const abs = x => singleOrArray(Math.abs, x)
 
+const max = (...x) => singleOrArray(Math.max, ...x)
+const min = (...x) => singleOrArray(Math.min, ...x)
+
 const ROOT_PI = sqrt(PI)
 const ROOT_HALF_PI = sqrt(HALF_PI)
 const ROOT_TWO_PI = sqrt(TWO_PI)

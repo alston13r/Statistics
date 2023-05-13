@@ -1,10 +1,23 @@
-let canvas = document.createElement('canvas')
-let grapher = new Graph(canvas, [-10,10], [-10,10], 500)
-grapher.appendTo(document.body)
-grapher.clear()
-grapher.drawAxes()
+// let canvas = document.createElement('canvas')
+// let grapher = new Graph(canvas, [-10,10], [-10,10], min(window.innerWidth, window.innerHeight))
+// grapher.appendTo(document.body)
+// grapher.clear()
+// grapher.drawAxes()
 
-grapher.graphFunction(myErfApprox.fn, [-5,0], true, false, '#0000ff')
+// grapher.graphFunction(myErfApprox.fn, [-5,0], '#0000ff', 2, GraphingOptions.Lining)
 
-console.log(PseudoNumber.mul(541.1234, 5427.32))
-console.log(541.1234*5427.32)
+// let w = min(window.innerWidth, window.innerHeight)
+
+// let canvas = document.createElement('canvas')
+// let grapher = new GraphingUtility(canvas, w)
+// grapher.appendTo(document.body)
+
+console.log(PseudoNumber.div(10, 3))
+
+// grapher.background('#000000')
+// grapher.align = TextAlign.Center
+// grapher.baseline = TextBaseline.Middle
+// grapher.font = '40px arial'
+// grapher.noStroke()
+// grapher.fill('#ffffff')
+// grapher.text(res, w/2, w/2)
