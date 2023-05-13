@@ -62,6 +62,71 @@ class PseudoNumber {
     }
     if (x instanceof PseudoNumber) return x
   }
+  static round(n, p) {
+    if (typeof n === 'number') n = new PseudoNumber(n)
+
+  }
+  round(p) {
+    return PseudoNumber.round(this.copy(), p)
+  }
+  static floor(n, p) {
+    if (typeof n === 'number') n = new PseudoNumber(n)
+    return PseudoNumber.trunc(n, p)
+  }
+  floor(p) {
+    return PseudoNumber.floor(this.copy(), p)
+  }
+  static ceil(n, p) {
+    if (typeof n === 'number') n = new PseudoNumber(n)
+    if (p > 0) {
+      if (n.hasDecimals()) {
+        let dec = n.getDecimals()
+        if (p < dec.length) {
+          PseudoNumber.floor(n, p)
+          let t = '0.'
+          for (let i=0; i<p-1; i++) t += '0'
+          t += '1'
+          PseudoNumber.add(n, new PseudoNumber(t))
+        }
+      }
+    } else if (p < 0) {
+      p = abs(p)
+      console.log(n.getBase().length, p)
+    } else {
+      if (n.hasDecimals()) PseudoNumber.add(PseudoNumber.floor(n), 1)
+    }
+    return n.clean()
+  }
+  ceil(p) {
+    return PseudoNumber.ceil(this.copy(), p)
+  }
+  static trunc(n, p) {
+    if (typeof n === 'number') n = new PseudoNumber(n)
+    if (p > 0) {
+      if (n.hasDecimals()) {
+        let d = n.getDecimals()
+        if (p < d.length) {
+          n.pseudo = n.getBase()+'.'+d.substring(0, p)
+        }
+      }
+    } else if (p < 0) {
+      p = abs(p)
+      let b = n.getBase()
+      if (p <= b.length) {
+        let t = b.substring(0, b.length-p)
+        for (let i=0; i<p; i++) t += '0'
+        n.pseudo = t
+      } else {
+        n.pseudo = '0'
+      }
+    } else {
+      n.pseudo = n.getBase()
+    }
+    return n.clean()
+  }
+  trunc(p) {
+    return PseudoNumber.trunc(this.copy(), p)
+  }
   static isZero(n) {
     n = PseudoNumber.EnsurePseudo(n)
     if (n.pseudo === '') return true
@@ -313,9 +378,12 @@ class PseudoNumber {
     let botSum = bottomLattice.latticeMulDiagonalSum()
     let topSum = topLattice.latticeMulDiagonalSum()
 
-    let res = [topSum[0]]
-    for (let i=1; i<top.length+side.length-1; i++) res[i] = botSum[i-1]+topSum[i]
-    res.push(botSum[top.length+side.length-2])
+    topSum.push(0)
+    botSum.splice(0, 0, 0)
+
+    let res = []
+    for (let i=0; i<top.length+side.length; i++) res[i] = topSum[i] + botSum[i]
+
     for (let i=res.length-1; i>=0; i--) {
       if (res[i] >= 10) {
         let c = floor(res[i]/10)
