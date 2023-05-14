@@ -5,15 +5,11 @@ Add TI84 functions
   tcdf
 
 PseudoNumber
-  division
   power
-  rounding
-  flooring
-  truncating
-  ceiling
   square root
   nth root
   trig
+  exp
 
 Add area for all the functions and descriptions
 Add table that shows certain values and calculations
