@@ -358,10 +358,6 @@ class List {
   }
 }
 
-const PI = Math.PI
-const HALF_PI = PI/2
-const TWO_PI = PI*2
-
 function singleOrArray(func, ...params) {
   let x = params.shift()
   if (x instanceof Array) {
@@ -372,8 +368,8 @@ function singleOrArray(func, ...params) {
   return func(x, ...params)
 }
 
-const radToDeg = x => singleOrArray(x => x*180/PI, x)
-const degToRad = x => singleOrArray(x => x*PI/180, x)
+const radToDeg = x => singleOrArray(x => x*180/Math.PI, x)
+const degToRad = x => singleOrArray(x => x*Math.PI/180, x)
 
 const floor = x => singleOrArray(Math.floor, x)
 const ceil = x => singleOrArray(Math.ceil, x)
@@ -383,10 +379,6 @@ const abs = x => singleOrArray(Math.abs, x)
 
 const max = (...x) => singleOrArray(Math.max, ...x)
 const min = (...x) => singleOrArray(Math.min, ...x)
-
-const ROOT_PI = sqrt(PI)
-const ROOT_HALF_PI = sqrt(HALF_PI)
-const ROOT_TWO_PI = sqrt(TWO_PI)
 
 const map = (x, a, b, c, d) => singleOrArray((x, a, b, c, d) => (x-a)/(b-a)*(d-c)+c, x, a, b, c, d)
 const lerp = (t, a, b) => map(t, 0, 1, a, b)

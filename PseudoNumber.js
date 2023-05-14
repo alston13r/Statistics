@@ -1,6 +1,15 @@
 class PseudoNumber {
+  static sqrt2 = new PseudoNumber('1.4142135623730950488016887242096980785697')
+  static cbrt2 = new PseudoNumber('1.2599210498948731647672106072782283505703')
+  static sqrt3 = new PseudoNumber('1.7320508075688772935274463415058723669428')
+  static cbrt3 = new PseudoNumber('1.4422495703074083823216383107801095883919')
   static e = new PseudoNumber('2.7182818284590452353602874713526624977572')
-  static pi = new PseudoNumber('3.1415926535897932384626433832795028841971')
+  static pi = new PseudoNumber('3.1415926535897932384626433832795028841972')
+  static half_pi = new PseudoNumber('1.5707963267948966192313216916397514420986')
+  static two_pi = new PseudoNumber('6.2831853071795864769252867665590057683943')
+  static root_pi = new PseudoNumber('1.7724538509055160272981674833411451827975')
+  static root_half_pi = new PseudoNumber('1.2533141373155002512078826424055226265035')
+  static root_two_pi = new PseudoNumber('2.506628274631000502415765284811045253007')
   constructor(n) {
     if (n != undefined) this.pseudo = typeof n==='string' ? n : n.toString()
     else this.pseudo = '0'
@@ -539,15 +548,14 @@ class PseudoNumber {
   static nroot(n, root, precision) {
     n = PseudoNumber.EnsurePseudo(n)
     root = PseudoNumber.EnsurePseudo(root)
-    let terms = [n.div(root)]
+    let terms = [n.div(root).add(rand())]
     let calcing = true
+    let A = root.sub(1).div(root, precision+5)
+    let B = n.div(root, precision+5)
     main: while (calcing) {
       let prevTerm = terms[terms.length-1]
-      let A = root.sub(1).div(root, precision+5)
-      let B = prevTerm
-      let C = n.div(root, precision+5)
-      let D = PseudoNumber.div(1, (prevTerm.pow(root.sub(1), precision+5)), precision+5)
-      terms.push(A.mul(B).add(C.mul(D)))
+      let C = PseudoNumber.div(1, (prevTerm.pow(root.sub(1), precision+5)), precision+5)
+      terms.push(A.mul(prevTerm).add(B.mul(C)))
       let lastTerm = terms[terms.length-1]
       if (prevTerm.round(precision).equals(lastTerm.round(precision))) break main
     }
