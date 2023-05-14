@@ -51,7 +51,7 @@ class PseudoNumber {
     b = PseudoNumber.EnsurePseudo(b)
     a.pseudo = b.pseudo
     a.sign = b.sign
-    return a
+    return a.clean()
   }
   copy() {
     return new PseudoNumber(this.toString())
@@ -61,6 +61,24 @@ class PseudoNumber {
       return new PseudoNumber(x)
     }
     if (x instanceof PseudoNumber) return x
+  }
+  static max(...x) {
+    if (x.length > 0) {
+      for (let [i,e] of x.entries()) x[i] = PseudoNumber.EnsurePseudo(e)
+      if (x.length == 1) return x[0].copy()
+      let t = x[0]
+      for (let i=1; i<x.length; i++) if (x[i].greaterThan(t)) t = x[i]
+      return t.copy()
+    } return new PseudoNumber()
+  }
+  static min(...x) {
+    if (x.length > 0) {
+      for (let [i,e] of x.entries()) x[i] = PseudoNumber.EnsurePseudo(e)
+      if (x.length == 1) return x[0].copy()
+      let t = x[0]
+      for (let i=1; i<x.length; i++) if (x[i].lessThan(t)) t = x[i]
+      return t.copy()
+    } return new PseudoNumber()
   }
   static round(n, p) {
     n = PseudoNumber.EnsurePseudo(n)
@@ -488,10 +506,74 @@ class PseudoNumber {
       }
     }
 
-    return PseudoNumber.copyFrom(a, new PseudoNumber(quotient).shiftDecimal(-precision).round(precision-1)).clean()
+    return PseudoNumber.copyFrom(a, new PseudoNumber(quotient).shiftDecimal(-precision).round(precision-1))
   }
   div(n, p) {
     return PseudoNumber.div(this.copy(), n, p)
+  }
+  static mod(n, d) {
+    n = PseudoNumber.EnsurePseudo(n)
+    d = PseudoNumber.EnsurePseudo(d)
+    if (n.lessThan(d)) return n.copy()
+    if (n.equals(d)) return new PseudoNumber()
+    let q = 2
+    let t = d.mul(q)
+    while(t.lessThanEqualTo(n)) t = d.mul(++q)
+    q--
+    return n.sub(d.mul(q))
+  }
+  mod(d) {
+    return PseudoNumber.mod(this, d)
+  }
+  static pow(n, power, precision) {
+    n = PseudoNumber.EnsurePseudo(n)
+    power = PseudoNumber.EnsurePseudo(power)
+    let t = n.copy()
+    for (let i=1; PseudoNumber.lessThan(i, power); i++) PseudoNumber.mul(t, n)
+    if (precision != undefined) PseudoNumber.round(t, precision)
+    return PseudoNumber.copyFrom(n, t)
+  }
+  pow(power, precision) {
+    return PseudoNumber.pow(this.copy(), power, precision)
+  }
+  static nroot(n, root, precision) {
+    n = PseudoNumber.EnsurePseudo(n)
+    root = PseudoNumber.EnsurePseudo(root)
+    let terms = [n.div(root)]
+    let calcing = true
+    main: while (calcing) {
+      let prevTerm = terms[terms.length-1]
+      let A = root.sub(1).div(root, precision+5)
+      let B = prevTerm
+      let C = n.div(root, precision+5)
+      let D = PseudoNumber.div(1, (prevTerm.pow(root.sub(1), precision+5)), precision+5)
+      terms.push(A.mul(B).add(C.mul(D)))
+      let lastTerm = terms[terms.length-1]
+      if (prevTerm.round(precision).equals(lastTerm.round(precision))) break main
+    }
+    return PseudoNumber.copyFrom(n, terms[terms.length-1].round(precision))
+  }
+  nroot(root, precision) {
+    return PseudoNumber.nroot(this.copy(), root, precision)
+  }
+  static fracPow(n, a, b, precision) {
+    n = PseudoNumber.EnsurePseudo(n)
+    return PseudoNumber.pow(n, a, precision+5).nroot(b, precision)
+  }
+  fracPow(a, b, precision) {
+    return PseudoNumber.fracPow(this.copy(), a, b, precision)
+  }
+  static sqrt(n, precision) {
+    return PseudoNumber.nroot(n, 2, precision)
+  }
+  sqrt(precision) {
+    return PseudoNumber.sqrt(this.copy(), precision)
+  }
+  static cbrt(n, precision) {
+    return PseudoNumber.nroot(n, 3, precision)
+  }
+  cbrt(precision) {
+    return PseudoNumber.cbrt(this.copy(), precision)
   }
   static getSplit(n) {
     n = PseudoNumber.EnsurePseudo(n)
@@ -557,3 +639,30 @@ class PseudoNumber {
     return (this.isNegative()?'-':'')+this.pseudo
   }
 }
+
+
+/*
+
+Fraction Simplification
+
+let top = PseudoNumber.EnsurePseudo(top)
+let bottom = PseudoNumber.EnsurePseudo(bottom)
+
+while (top.hasDecimals() || bottom.hasDecimals) {
+  PseudoNumber.shiftDecimal(top, 1)
+  PseudoNumber.shiftDecimal(bottom, 1)
+}
+
+main: while(true) {
+  let t = PseudoNumber.min(top, bottom)
+  for (let i=2; PseudoNumber.lessThanEqualTo(i, t); i++) {
+    if (top.mod(i).equals(0) && bottom.mod(i).equals(0)) {
+      PseudoNumber.div(top, i)
+      PseudoNumber.div(bottom, i)
+      continue main
+    }
+  }
+  break main
+}
+
+*/
