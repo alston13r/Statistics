@@ -468,6 +468,8 @@ class PseudoNumber {
     a = PseudoNumber.EnsurePseudo(a)
     b = PseudoNumber.EnsurePseudo(b)
 
+    let ns = a.getSign() == b.getSign() ? '+' : '-'
+
     let aDecLen = a.getDecimalLength()
     let bDecLen = b.getDecimalLength()
     let decimalPlaces = aDecLen-bDecLen
@@ -490,7 +492,7 @@ class PseudoNumber {
     let remainder = new PseudoNumber()
     for (let i=0; i<am.length; i++) {
       if (borrowing && remainder.equals(0)) {
-        return PseudoNumber.copyFrom(a, new PseudoNumber(quotient).shiftDecimal(am.length-precision-i)).clean()
+        return PseudoNumber.copyFrom(a, new PseudoNumber(quotient).shiftDecimal(am.length-precision-i).setSign(ns))
       }
       let quot
       let dividend = remainder.shiftDecimal(1).add(am[i])
@@ -515,7 +517,7 @@ class PseudoNumber {
       }
     }
 
-    return PseudoNumber.copyFrom(a, new PseudoNumber(quotient).shiftDecimal(-precision).round(precision-1))
+    return PseudoNumber.copyFrom(a, new PseudoNumber(quotient).shiftDecimal(-precision).round(precision-1).setSign(ns))
   }
   div(n, p) {
     return PseudoNumber.div(this.copy(), n, p)
@@ -537,6 +539,12 @@ class PseudoNumber {
   static pow(n, power, precision) {
     n = PseudoNumber.EnsurePseudo(n)
     power = PseudoNumber.EnsurePseudo(power)
+    if (power.equals(0)) return PseudoNumber.copyFrom(n, 1)
+    if (n.abs().equals(1)) {
+      if (n.isPositive()) return n
+      n.sign = power.mod(2).equals(0) ? '+' : '-'
+      return n
+    }
     let t = n.copy()
     for (let i=1; PseudoNumber.lessThan(i, power); i++) PseudoNumber.mul(t, n)
     if (precision != undefined) PseudoNumber.round(t, precision)
@@ -638,6 +646,14 @@ class PseudoNumber {
   }
   isNegative() {
     return this.sign == '-'
+  }
+  static setSign(n, s) {
+    n.sign = s
+    return n
+  }
+  setSign(s) {
+    this.sign = s
+    return this
   }
   toNumber() {
     if (this.hasDecimals()) return parseFloat(this.pseudo)
