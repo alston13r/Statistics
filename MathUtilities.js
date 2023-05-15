@@ -368,6 +368,14 @@ function singleOrArray(func, ...params) {
   return func(x, ...params)
 }
 
+const PI = Math.PI
+const TWO_PI = 2*PI
+const HALF_PI = PI/2
+
+const ROOT_PI = Math.sqrt(PI)
+const ROOT_TWO_PI = Math.sqrt(TWO_PI)
+const ROOT_HALF_PI = Math.sqrt(HALF_PI)
+
 const radToDeg = x => singleOrArray(x => x*180/Math.PI, x)
 const degToRad = x => singleOrArray(x => x*Math.PI/180, x)
 
