@@ -12,8 +12,6 @@
 // let grapher = new GraphingUtility(canvas, w)
 // grapher.appendTo(document.body)
 
-console.log(PseudoNumber.div(10, 3))
-
 // grapher.background('#000000')
 // grapher.align = TextAlign.Center
 // grapher.baseline = TextBaseline.Middle
