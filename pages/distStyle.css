@@ -125,13 +125,6 @@ a {
   color: #34bfff
 }
 
-ul {
-  margin-top: 0px;
-  list-style-type: square;
-  padding-left: 25px;
-  margin-bottom: 0px;
-}
-
 input[type='text'] {
   background-color: #555;
   border: solid #222 1px;
