@@ -1,5 +1,3 @@
-const specialCharacters = ['Σ','μ','σ','x̄']
-
 class Matrix {
   constructor(r,c) {
     if (r instanceof Array) {
