@@ -1,16 +1,11 @@
 include conditions for estimating and doing significance tests
+add server to run r
 
 Add TI84 functions
   chi2cdf
   invnorm
   invt
   tcdf
-
-PseudoNumber
-  trig
-  exp
-  logarithm
-  natural logarithm
 
 Add area for all the functions and descriptions
 Add table that shows certain values and calculations
@@ -21,13 +16,9 @@ Tree diagram maker?
 Venn diagram maker?
 Probability calculations
   chi2cdf
-    use taylor approx
   invnorm
-    use taylor approx
   invt
-    use taylor approx
   tcdf
-    use taylor approx
 Chi squared
   rewrite in terms of lists
   maybe even gof for tables or independence :O
