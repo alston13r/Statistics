@@ -3,6 +3,7 @@
   <head>
     <title>Normal Distributions</title>
     <link rel='stylesheet' href='../distStyle.css'>
+    <link rel='stylesheet' href='../textStyle.css'>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.5.0/math.min.js'></script>
     <script src='../../MathUtilities.js'></script>
     <script src='../../TI84 Functions/NormDist.js'></script>
@@ -21,20 +22,46 @@
     </div>
     <div id='rightBox'>
       <div id='distInfoContainer' class='container'>
-        A <strong style='text-decoration: underline;'>density curve</strong>
-        is a curve that<br>• is always on or above the horizontal axis,
-        and<br>• has area exactly 1 underneath it.<br>A density curve
-        describes the overall pattern of a distribution. The area under the
-        curve and above any interval of values on the horizontal axis is the
-        proportion of all observations that fall in that interval.<br><br>A
-        <strong style='text-decoration: underline;'>Normal distribution</strong>
-        is described by a Normal density curve. Any particular Normal distribution
-        is completely specified by two numbers: its mean μ and standard deviation σ.
-        The mean of a Normal distribution is at the center of the symmetric
-        <strong style='text-decoration: underline;'>Normal curve</strong>. The
-        standard deviation is the distance from the center to the change-of-curvature
-        points on either side.<br> We abbreviate the Normal distribution with mean
-        μ and standard deviation σ as N(μ, σ).
+        A <span class='important'>density curve</span> is a curve that<br>
+        • is always on or above the horizontal axis, and<br>
+        • has area exactly 1 underneath it.<br>
+        A density curve describes the overall pattern of a distribution.
+        The area under the curve and above any interval of values on the
+        horizontal axis is the proportion of all observations that fall
+        in that interval.
+        <br><br><br>
+        • All Normal curves have the same overall shape: symmetric, single-peaked,
+        and bell-shaped.<br>
+        • Any specific Normal curve is completely described by giving its mean
+        <span class='ital'>μ</span> and its standard deviation
+        <span class='ital'>σ</span>.<br>
+        • The mean is located at the center of the symmetric curve and is the
+        same as the median. Changing <span class='ital'>μ</span> without changing
+        <span class='ital'>σ</span> moves the Normal curve along the horizontal
+        axis without changing its spread.<br>
+        • The standard deviation <span class='ital'>σ</span> controls the spread
+        of a Normal curve. Curves with larger standard deviations are more spread out.
+        <br><br><br>
+        A <span class='important'>Normal distribution</span> is described by a
+        Normal density curve. Any particular Normal distribution is completely
+        specified by two numbers: its mean <span class='ital'>μ</span> and standard
+        deviation <span class='ital'>σ</span>. The mean of a Normal distribution is
+        at the center of the symmetric <span class='important'>Normal curve</span>.
+        The standard deviation is the distance from the center to the change-of-curvature
+        points on either side.<br>
+        We abbreviate the Normal distribution with mean <span class='ital'>μ</span>
+        and standard deviation <span class='ital'>σ</span>
+        as N(<span class='ital'>μ</span>, <span class='ital'>σ</span>).
+        <br><br><br>
+        <span class='important'>The 68-95-99.7 rule</span>
+        In a Normal distribution with mean <span class='ital'>μ</span> and standard
+        deviation <span class='ital'>σ</span>:<br>
+        • Approximately <span class='important'>68%</span> of the observations fall
+        within <span class='ital'>σ</span> of the mean <span class='ital'>μ</span>.<br>
+        • Approximately <span class='important'>95%</span> of the observations fall
+        within 2<span class='ital'>σ</span> of the mean <span class='ital'>μ</span>.<br>
+        • Approximately <span class='important'>99.7%</span> of the observations fall
+        within 3<span class='ital'>σ</span> of the mean <span class='ital'>μ</span>.
       </div>
       <div id='calcInfoContainer' class='container'>
         Mean <input type='text' id='meanInput'></input><br>
@@ -50,12 +77,10 @@
           <a href='../../index.html' target='_self'>Home Page</a>
         </div>
         <div>
-          <ul>
-            <li><a href='../binom/index.html' target='_self'>Binomial</a></li>
-            <li><a href='../chi/index.html' target='_self'>Chi-Squared</a></li>
-            <li><a href='../geomet/index.html' target='_self'>Geometric</a></li>
-            <li><a href='../t/index.html' target='_self'>T</a></li>
-          </ul>
+          • <a href='../binom/index.html' target='_self'>Binomial</a><br>
+          • <a href='../chi/index.html' target='_self'>Chi-Squared</a><br>
+          • <a href='../geomet/index.html' target='_self'>Geometric</a><br>
+          • <a href='../t/index.html' target='_self'>T</a>
         </div>
         <div>
           <a href='https://github.com/alston13r/Ultimate-Statistics' target='_blank'>Github</a>
