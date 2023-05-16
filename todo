@@ -1,28 +1,33 @@
-include conditions for estimating and doing significance tests
-create server to run r
+Distribution pages
+  Create cool footer
+  Include conditions for estimating and doing significance tests
+  Setup
+    Binomial
+    Chi
+    Geometric
+    Sample
 
-create cool footer
-
-Add TI84 functions
-  chi2cdf
+TI84 function todo
+  chi2 cdf
+  t cdf
   invnorm
   invt
-  tcdf
 
-Add area for all the functions and descriptions
 Add table that shows certain values and calculations
+  Z table
+  T table
+  Chi table
+  Random number table
 
-Add information for all distribution methods and whatnot
-
-Tree diagram maker?
-Venn diagram maker?
+Tree diagram maker
+Venn diagram maker
 
 Chi squared
   rewrite in terms of lists
   maybe even gof for tables or independence :O
 
-graphing stuff
-  statistics
+Graphing utilities
+  Stats
     scatter plot
     lin reg
     box plot
@@ -30,9 +35,10 @@ graphing stuff
     histogram
     density curve
     bar graph
-  not statistics
-    grid lines
-    axis scale
-      ticks at dx and dy
-    slope field
+  Not stats
     axis titles
+    axis scale
+    slope field
+    grid lines
+
+Create server to run r stuff
