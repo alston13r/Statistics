@@ -1,5 +1,5 @@
 include conditions for estimating and doing significance tests
-add server to run r
+create server to run r
 
 Add TI84 functions
   chi2cdf
@@ -14,11 +14,7 @@ Add information for all distribution methods and whatnot
 
 Tree diagram maker?
 Venn diagram maker?
-Probability calculations
-  chi2cdf
-  invnorm
-  invt
-  tcdf
+
 Chi squared
   rewrite in terms of lists
   maybe even gof for tables or independence :O
