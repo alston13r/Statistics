@@ -1,3 +1,5 @@
+include conditions for estimating and doing significance tests
+
 Add TI84 functions
   chi2cdf
   invnorm

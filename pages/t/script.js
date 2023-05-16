@@ -18,10 +18,14 @@ grapher.graphNormalCurve(0, 1, '#00f', 2)
 let dfInput = document.getElementById('dfInput')
 dfInput.defaultValue = '1'
 
-function submitGraphDetails() {
+function resetGraph() {
   grapher.clear()
   grapher.drawAxes()
   grapher.graphNormalCurve(0, 1, '#00f', 2)
+}
+
+function submitGraphDetails() {
+  resetGraph()
   let df = parseFloat(dfInput.value)
   grapher.graphTCurve(df, '#f00', 1)
 }
@@ -31,7 +35,7 @@ xInput.defaultValue = '0'
 function submitPdfDetails() {
   let df = parseFloat(dfInput.value)
   let x = parseFloat(xInput.value)
-  calcOutput.innerHTML = 'Output:<br>' + TPDF(x, df)
+  calcOutput.innerHTML = 'Output:<br>' + round(TPDF(x, df), 8)
 }
 
 let lowerInput = document.getElementById('lowerInput')
@@ -45,30 +49,32 @@ function submitCdfDetails() {
   calcOutput.innerHTML = 'Output:<br>' + TCDF(lower, upper, df)
 }
 
+function startup() {
+  dfInput.value = '1'
+  lowerInput.value = '-10000'
+  upperInput.value = '0'
+  resetGraph()
+}
+
+let pressEvents = ['mousedown', 'touchstart']
+let unpressEvents = ['mouseup', 'mouseout', 'touchend', 'touchcancel']
+
 for (let b of document.getElementsByClassName('coolButton')) {
-  b.addEventListener('mousedown', () => {
-    b.style.border = 'inset #a00 3px'
-    b.style.backgroundColor = '#d00'
-  })
-  b.addEventListener('mouseup', () => {
-    b.style.border = 'outset #a00 3px'
-    b.style.backgroundColor = '#f00'
-  })
-  b.addEventListener('mouseout', () => {
-    b.style.border = 'outset #a00 3px'
-    b.style.backgroundColor = '#f00'
-  })
+  for (let e of pressEvents) b.addEventListener(e, () => b.dataset.pressed = 'true')
+  for (let e of unpressEvents) b.addEventListener(e, () => b.dataset.pressed = 'false')
 }
 
 let graphItButton = document.getElementById('graphIt')
 let pdfButton = document.getElementById('calcPDF')
 let cdfButton = document.getElementById('calcCDF')
 
-graphItButton.addEventListener('mousedown', submitGraphDetails)
-pdfButton.addEventListener('mousedown', submitPdfDetails)
-cdfButton.addEventListener('mousedown', submitCdfDetails)
+for (let e of pressEvents) graphItButton.addEventListener(e, submitGraphDetails)
+for (let e of pressEvents) pdfButton.addEventListener(e, submitPdfDetails)
+for (let e of pressEvents) cdfButton.addEventListener(e, submitCdfDetails)
 
 window.onresize = () => {
   grapher.grapher.size = [graphContainer.clientWidth, graphContainer.clientHeight]
-  submitGraphDetails()
+  resetGraph()
 }
+
+document.addEventListener('DOMContentLoaded', startup)

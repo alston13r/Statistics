@@ -11,19 +11,20 @@ let gw = graphContainer.clientWidth
 let gh = graphContainer.clientHeight
 let grapher = new Graph(canvas, [-5, 5], [-0.5, 1], [gw, gh])
 grapher.appendTo(graphContainer)
-grapher.clear()
-grapher.drawAxes()
-grapher.graphNormalCurve(0, 1, '#00f', 2)
 
 let meanInput = document.getElementById('meanInput')
 let stdevInput = document.getElementById('stdevInput')
 meanInput.defaultValue = '0'
 stdevInput.defaultValue = '1'
 
-function submitGraphDetails() {
+function resetGraph() {
   grapher.clear()
   grapher.drawAxes()
   grapher.graphNormalCurve(0, 1, '#00f', 2)
+}
+
+function submitGraphDetails() {
+  resetGraph()
   let mean = parseFloat(meanInput.value)
   let stdev = parseFloat(stdevInput.value)
   grapher.graphNormalCurve(mean, stdev, '#f00', 1)
@@ -35,7 +36,7 @@ function submitPdfDetails() {
   let x = parseFloat(xInput.value)
   let mean = parseFloat(meanInput.value)
   let stdev = parseFloat(stdevInput.value)
-  calcOutput.innerHTML = 'Output:<br>' + NormalPDF(x, mean, stdev)
+  calcOutput.innerHTML = 'Output:<br>' + round(NormalPDF(x, mean, stdev), 8)
 }
 
 let lowerInput = document.getElementById('lowerInput')
@@ -47,33 +48,37 @@ function submitCdfDetails() {
   let upper = parseFloat(upperInput.value)
   let mean = parseFloat(meanInput.value)
   let stdev = parseFloat(stdevInput.value)
-  calcOutput.innerHTML = 'Output:<br>' + NormalCDF(lower, upper, mean, stdev)
+  calcOutput.innerHTML = 'Output:<br>' + round(NormalCDF(lower, upper, mean, stdev), 8)
 }
 
+function startup() {
+  meanInput.value = '0'
+  stdevInput.value = '1'
+  xInput.value = '0'
+  lowerInput.value = '-10000'
+  upperInput.value = '0'
+  resetGraph()
+}
+
+let pressEvents = ['mousedown', 'touchstart']
+let unpressEvents = ['mouseup', 'mouseout', 'touchend', 'touchcancel']
+
 for (let b of document.getElementsByClassName('coolButton')) {
-  b.addEventListener('mousedown', () => {
-    b.style.border = 'inset #a00 3px'
-    b.style.backgroundColor = '#d00'
-  })
-  b.addEventListener('mouseup', () => {
-    b.style.border = 'outset #a00 3px'
-    b.style.backgroundColor = '#f00'
-  })
-  b.addEventListener('mouseout', () => {
-    b.style.border = 'outset #a00 3px'
-    b.style.backgroundColor = '#f00'
-  })
+  for (let e of pressEvents) b.addEventListener(e, () => b.dataset.pressed = 'true')
+  for (let e of unpressEvents) b.addEventListener(e, () => b.dataset.pressed = 'false')
 }
 
 let graphItButton = document.getElementById('graphIt')
 let pdfButton = document.getElementById('calcPDF')
 let cdfButton = document.getElementById('calcCDF')
 
-graphItButton.addEventListener('mousedown', submitGraphDetails)
-pdfButton.addEventListener('mousedown', submitPdfDetails)
-cdfButton.addEventListener('mousedown', submitCdfDetails)
+for (let e of pressEvents) graphItButton.addEventListener(e, submitGraphDetails)
+for (let e of pressEvents) pdfButton.addEventListener(e, submitPdfDetails)
+for (let e of pressEvents) cdfButton.addEventListener(e, submitCdfDetails)
 
 window.onresize = () => {
   grapher.grapher.size = [graphContainer.clientWidth, graphContainer.clientHeight]
-  submitGraphDetails()
+  resetGraph()
 }
+
+document.addEventListener('DOMContentLoaded', startup)
