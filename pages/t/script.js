@@ -15,27 +15,23 @@ grapher.clear()
 grapher.drawAxes()
 grapher.graphNormalCurve(0, 1, '#00f', 2)
 
-let meanInput = document.getElementById('meanInput')
-let stdevInput = document.getElementById('stdevInput')
-meanInput.defaultValue = '0'
-stdevInput.defaultValue = '1'
+let dfInput = document.getElementById('dfInput')
+dfInput.defaultValue = '1'
 
 function submitGraphDetails() {
   grapher.clear()
   grapher.drawAxes()
   grapher.graphNormalCurve(0, 1, '#00f', 2)
-  let mean = parseFloat(meanInput.value)
-  let stdev = parseFloat(stdevInput.value)
-  grapher.graphNormalCurve(mean, stdev, '#f00', 1)
+  let df = parseFloat(dfInput.value)
+  grapher.graphTCurve(df, '#f00', 1)
 }
 
 let xInput = document.getElementById('xInput')
 xInput.defaultValue = '0'
 function submitPdfDetails() {
+  let df = parseFloat(dfInput.value)
   let x = parseFloat(xInput.value)
-  let mean = parseFloat(meanInput.value)
-  let stdev = parseFloat(stdevInput.value)
-  calcOutput.innerHTML = 'Output:<br>' + NormalPDF(x, mean, stdev)
+  calcOutput.innerHTML = 'Output:<br>' + TPDF(x, df)
 }
 
 let lowerInput = document.getElementById('lowerInput')
@@ -45,9 +41,8 @@ upperInput.defaultValue = '0'
 function submitCdfDetails() {
   let lower = parseFloat(lowerInput.value)
   let upper = parseFloat(upperInput.value)
-  let mean = parseFloat(meanInput.value)
-  let stdev = parseFloat(stdevInput.value)
-  calcOutput.innerHTML = 'Output:<br>' + NormalCDF(lower, upper, mean, stdev)
+  let df = parseFloat(dfInput.value)
+  calcOutput.innerHTML = 'Output:<br>' + TCDF(lower, upper, df)
 }
 
 for (let b of document.getElementsByClassName('coolButton')) {
