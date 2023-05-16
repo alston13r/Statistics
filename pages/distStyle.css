@@ -1,26 +1,78 @@
 body {
   background-color: #333;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
   margin: 0;
-  overflow: hidden;
   font-family: arial;
   color: #fff;
   font-size: 120%;
 }
 
-#left {
-  float: left;
-  width: 50%;
+#leftBox {
+  flex-shrink: 0;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  float: left;
+  width: max(352px, 55%);
 }
 
-#right {
-  float: right;
-  width: 50%;
+#rightBox {
+  flex-shrink: 0;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  float: left;
+  width: max(288px, 45%);
 }
 
 .container {
   background-color: #444;
+}
+
+#graphContainer {
+  margin: 10px 5px 5px 10px;
+  height: max(calc(80vh - 15px), 264px);
+  width: max(calc(55vw - 15px), 335.5px);
+}
+
+#buttonContainer {
+  margin: 5px 5px 10px 10px;
+  height: max(calc(20vh - 15px), 66px);
+  width: max(calc(55vw - 15px), 335.5px);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#distInfoContainer {
+  margin: 10px 10px 5px 5px;
+  height: max(calc(45vh - 25px), 134px);
+  width: max(calc(45vw - 25px), 264.5px);
+  overflow-y: auto;
+  padding: 5px;
+}
+
+#calcInfoContainer {
+  margin: 5px 10px 5px 5px;
+  height: max(calc(30vh - 20px), 86px);
+  width: max(calc(45vw - 25px), 264.5px);
+  overflow-y: auto;
+  padding: 5px;
+}
+
+#linkContainer {
+  margin: 5px 10px 10px 5px;
+  height: max(calc(25vh - 25px), 70px);
+  width: max(calc(45vw - 25px), 264.5px);
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  color: #34bfff;
 }
 
 .coolButton {
@@ -35,11 +87,7 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 120%;
-}
-
-#distInfoContainer {
-  padding: 5px;
-  overflow-x: hidden;
+  width: calc(18% - 20px);
 }
 
 #calcOutput {
@@ -53,16 +101,7 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 110%;
-}
-
-#calcInfoContainer {
-  overflow-x: hidden;
-}
-
-#linkContainer {
-  display: flex;
-  flex-direction: row;
-  color: #34bfff;
+  width: calc(40% - 20px)
 }
 
 #linkContainer div {
@@ -71,8 +110,7 @@ body {
   padding: 5px;
 }
 
-#linkContainer div a,
-ul li a {
+a {
   color: #34bfff
 }
 
