@@ -1,6 +1,8 @@
 include conditions for estimating and doing significance tests
 create server to run r
 
+create cool footer
+
 Add TI84 functions
   chi2cdf
   invnorm
