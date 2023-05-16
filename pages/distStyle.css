@@ -4,8 +4,83 @@ body {
   overflow: hidden;
   font-family: arial;
   color: #fff;
+  font-size: 120%;
 }
-#mainContainer {
+#left {
+  float: left;
+  width: 50%;
+  height: 100vh;
+}
+#right {
+  float: right;
+  width: 50%;
+  height: 100vh;
+}
+.container {
+  background-color: #444;
+}
+.coolButton {
+  background-color: #f00;
+  border-radius: 10px;
+  padding: 5px;
+  user-select: none;
+  border: outset #a00 3px;
+  float: left;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 120%;
+}
+#distInfoContainer {
+  font-size: 80%;
+  padding: 5px;
+  overflow: scroll;
+}
+#calcOutput {
+  border-radius: 10px;
+  padding: 5px;
+  background-color: #555;
+  border: solid #333 3px;
+  float: left;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 110%;
+}
+#calcInfoContainer {
+  overflow: scroll;
+}
+#linkContainer {
+  display: flex;
+  flex-direction: row;
+  color: #34bfff;
+}
+#linkContainer div {
+  vertical-align: center;
+  height: fit-content;
+  padding: 5px;
+}
+#linkContainer div a, ul li a {
+  color: #34bfff
+}
+ul {
+  margin-top: 0px;
+  list-style-type: square;
+  padding-left: 25px;
+  margin-bottom: 0px;
+}
+input[type='text'] {
+  background-color: #555;
+  border: solid #222 1px;
+  color: #fff;
+  width: fit-content;
+  padding: 2px;
+}
+
+
+/* #mainContainer {
   width: 100vw;
   height: 100vh;
 }
@@ -109,4 +184,4 @@ ul li a {
   padding-top: 10px;
   padding-left: 10px;
   vertical-align: top;
-}
+} */
