@@ -73,6 +73,9 @@ body {
   padding: 5px;
   display: flex;
   flex-direction: row;
+}
+
+#linkContainer > a {
   color: #34bfff;
 }
 
