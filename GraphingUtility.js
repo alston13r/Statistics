@@ -104,8 +104,8 @@ class GraphingUtility {
     this.canvas = canvas
     this.ctx = this.canvas.getContext('2d')
     this.layers = [new Layer(this.ctx)]
-    Object.defineProperty(this, 'lastLayerIndex', {get: () => this.layers.length-1})
-    Object.defineProperty(this, 'lastLayer', {get: () => this.layers[this.lastLayerIndex]})
+    Object.defineProperty(this, 'lastLayerIndex', { get: () => this.layers.length - 1 })
+    Object.defineProperty(this, 'lastLayer', { get: () => this.layers[this.lastLayerIndex] })
     for (let k in this.lastLayer) {
       if (k != 'ctx' && k != 'currTransform') {
         Object.defineProperty(this, k, {
@@ -203,7 +203,7 @@ class GraphingUtility {
   rect(x, y, w, h) {
     this.push()
     if (this.rectMode == RectMode.Corner) this.translate(x, y)
-    else if (this.rectMode == RectMode.Center) this.translate(x - w/2, y - h/2)
+    else if (this.rectMode == RectMode.Center) this.translate(x - w / 2, y - h / 2)
     if (this.fillEnabled) this.ctx.fillRect(0, 0, w, h)
     if (this.strokeEnabled) this.ctx.strokeRect(0, 0, w, h)
     this.pop()
@@ -211,9 +211,9 @@ class GraphingUtility {
   ellipse(x, y, w, h) {
     this.push()
     if (this.ellipseMode == EllipseMode.Center) this.translate(x, y)
-    else if (this.ellipseMode == EllipseMode.Corner) this.translate(x + w/2, y + h/2)
+    else if (this.ellipseMode == EllipseMode.Corner) this.translate(x + w / 2, y + h / 2)
     this.ctx.beginPath()
-    this.ctx.ellipse(0, 0, w/2, h/2, 0, 0, Math.PI*2)
+    this.ctx.ellipse(0, 0, w / 2, h / 2, 0, 0, Math.PI * 2)
     if (this.fillEnabled) this.fillPath()
     if (this.strokeEnabled) this.strokePath()
     this.pop()

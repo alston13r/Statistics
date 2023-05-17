@@ -1,45 +1,45 @@
 class Matrix {
-  constructor(r,c) {
+  constructor(r, c) {
     if (r instanceof Array) {
       if (r[0] instanceof Array) {
         this.r = r.length
         this.c = r[0].length
         this.grid = []
-        for (let i=0;i<this.r;i++) this.grid[i] = [...r[i]]
+        for (let i = 0; i < this.r; i++) this.grid[i] = [...r[i]]
       } else {
         this.r = r.length
         this.c = 1
         this.grid = []
-        for (let i=0;i<this.r;i++) this.grid[i] = [r[i]]
+        for (let i = 0; i < this.r; i++) this.grid[i] = [r[i]]
       }
     } else if (r instanceof Matrix) {
       this.r = r.r
       this.c = r.c
       this.grid = []
-      for (let i=0;i<this.r;i++) this.grid[i] = [...r.grid[i]]
+      for (let i = 0; i < this.r; i++) this.grid[i] = [...r.grid[i]]
     } else {
       this.r = r
       this.c = c
       this.grid = []
-      for (let i=0;i<r;i++) {
+      for (let i = 0; i < r; i++) {
         this.grid[i] = []
-        for (let j=0;j<c;j++) this.grid[i][j] = 0
+        for (let j = 0; j < c; j++) this.grid[i][j] = 0
       }
     }
   }
   *[Symbol.iterator]() {
     yield* this.toArray()
   }
-  static map(m,fn) {
-    for (let i=0;i<m.r;i++) for (let j=0;j<m.c;j++) m.grid[i][j] = fn(m.grid[i][j],i,j,m)
+  static map(m, fn) {
+    for (let i = 0; i < m.r; i++) for (let j = 0; j < m.c; j++) m.grid[i][j] = fn(m.grid[i][j], i, j, m)
     return m
   }
   map(fn) {
-    return Matrix.map(this.copy(),fn)
+    return Matrix.map(this.copy(), fn)
   }
   static copy(m) {
-    let n = new Matrix(m.r,m.c)
-    for (let i=0;i<m.r;i++) n.grid[i] = [...m.grid[i]]
+    let n = new Matrix(m.r, m.c)
+    for (let i = 0; i < m.r; i++) n.grid[i] = [...m.grid[i]]
     return n
   }
   copy() {
@@ -61,65 +61,65 @@ class Matrix {
   summate() {
     return Matrix.summate(this)
   }
-  static add(m,x) {
+  static add(m, x) {
     if (x instanceof Matrix) {
-      if (m.r!=x.r||m.c!=x.c) throw Error('Matrix incompatibility - addition')
-      return Matrix.map(m,(e,i,j) => e+x.grid[i][j])
-    } return Matrix.map(m,e => e+x)
+      if (m.r != x.r || m.c != x.c) throw Error('Matrix incompatibility - addition')
+      return Matrix.map(m, (e, i, j) => e + x.grid[i][j])
+    } return Matrix.map(m, e => e + x)
   }
   add(x) {
-    return Matrix.add(this.copy(),x)
+    return Matrix.add(this.copy(), x)
   }
-  static mul(m,x) {
+  static mul(m, x) {
     if (x instanceof Matrix) {
-      if (m.r!=x.r||m.c!=x.c) throw Error('Matrix incompatibility - multiplication')
-      return Matrix.map(m,(e,i,j) => e*x.grid[i][j])
-    } return Matrix.map(m,e => e*x)
+      if (m.r != x.r || m.c != x.c) throw Error('Matrix incompatibility - multiplication')
+      return Matrix.map(m, (e, i, j) => e * x.grid[i][j])
+    } return Matrix.map(m, e => e * x)
   }
   mul(x) {
-    return Matrix.mul(this.copy(),x)
+    return Matrix.mul(this.copy(), x)
   }
-  static sub(m,x) {
+  static sub(m, x) {
     if (x instanceof Matrix) {
-      if (m.r!=x.r||m.c!=x.c) throw Error('Matrix incompatibility - subtraction')
-      return Matrix.add(m,x.mul(-1))
-    } return Matrix.map(m,e => e-x)
+      if (m.r != x.r || m.c != x.c) throw Error('Matrix incompatibility - subtraction')
+      return Matrix.add(m, x.mul(-1))
+    } return Matrix.map(m, e => e - x)
   }
   sub(x) {
-    return Matrix.sub(this.copy(),x)
+    return Matrix.sub(this.copy(), x)
   }
-  static div(m,x) {
+  static div(m, x) {
     if (x instanceof Matrix) {
-      if (m.r!=x.r||m.c!=x.c) throw Error('Matrix incompatibility - subtraction')
-      return Matrix.map(m,(e,i,j) => e/x.grid[i][j])
-    } return Matrix.map(m,e => e/x)
+      if (m.r != x.r || m.c != x.c) throw Error('Matrix incompatibility - subtraction')
+      return Matrix.map(m, (e, i, j) => e / x.grid[i][j])
+    } return Matrix.map(m, e => e / x)
   }
   div(x) {
-    return Matrix.div(this.copy(),x)
+    return Matrix.div(this.copy(), x)
   }
-  static dot(a,b) {
+  static dot(a, b) {
     if (a.c != b.r) throw Error('Matrix incompatibility - dot product')
-    let m = new Matrix(a.r,b.c)
-    return m.map((e,i,j) => {
+    let m = new Matrix(a.r, b.c)
+    return m.map((e, i, j) => {
       let sum = 0
-      for (let k=0;k<a.c;k++) sum += a.grid[i][k]*b.grid[k][j]
+      for (let k = 0; k < a.c; k++) sum += a.grid[i][k] * b.grid[k][j]
       return sum
     })
   }
   dot(m) {
-    return Matrix.dot(this,m)
+    return Matrix.dot(this, m)
   }
   static randomize(m) {
-    return Matrix.map(m,() => Math.random()*2-1)
+    return Matrix.map(m, () => Math.random() * 2 - 1)
   }
   randomize() {
     return Matrix.randomize(this.copy())
   }
   static transpose(m) {
     let tGrid = []
-    for (let i=0;i<m.c;i++) {
+    for (let i = 0; i < m.c; i++) {
       tGrid[i] = []
-      for (let j=0;j<m.r;j++) tGrid[i][j] = m.grid[j][i]
+      for (let j = 0; j < m.r; j++) tGrid[i][j] = m.grid[j][i]
     }
     let td = m.r
     m.r = m.c
@@ -128,19 +128,19 @@ class Matrix {
     return m
   }
   transpose() {
-    let m = new Matrix(this.c,this.r)
-    return m.map((e,i,j) => this.grid[j][i])
+    let m = new Matrix(this.c, this.r)
+    return m.map((e, i, j) => this.grid[j][i])
   }
   static numerize(m) {
-    return Matrix.map(m,(e,i,j) => i*m.c+j)
+    return Matrix.map(m, (e, i, j) => i * m.c + j)
   }
   numerize() {
     return Matrix.numerize(this.copy())
   }
   static latticeMulDiagonalSum(m) {
     let res = []
-    for (let i=0; i<m.r+m.c-1; i++) res[i] = 0
-    m.map((e, i, j) => res[i+j] += e)
+    for (let i = 0; i < m.r + m.c - 1; i++) res[i] = 0
+    m.map((e, i, j) => res[i + j] += e)
     return res
   }
   latticeMulDiagonalSum() {
@@ -150,11 +150,11 @@ class Matrix {
 
 class List {
   constructor(a) {
-    this.elements = a!=undefined?[...a]:[]
+    this.elements = a != undefined ? [...a] : []
     this.setIndecies()
   }
   clearIndecies() {
-    for (let i=0;i<this.length;i++) delete this[i]
+    for (let i = 0; i < this.length; i++) delete this[i]
   }
   setIndecies() {
     this.clearIndecies()
@@ -187,21 +187,21 @@ class List {
     return List.copy(this)
   }
   static map(l, fn) {
-    for (let i=0;i<l.length;i++) l.elements[i] = fn(l[i], i, l)
+    for (let i = 0; i < l.length; i++) l.elements[i] = fn(l[i], i, l)
     return l
   }
   map(fn) {
     return List.map(this.copy(), fn)
   }
   static leastToGreatest(l) {
-    l.elements.sort((a,b) => a-b)
+    l.elements.sort((a, b) => a - b)
     return l
   }
   leastToGreatest() {
     return List.leastToGreatest(this.copy())
   }
   static greatestToLeast(l) {
-    l.elements.sort((a,b) => b-a)
+    l.elements.sort((a, b) => b - a)
     return l
   }
   greatestToLeast() {
@@ -217,16 +217,16 @@ class List {
   }
   static mean(l) {
     let s = l.sum()
-    return s/l.length
+    return s / l.length
   }
   mean() {
     return List.mean(this)
   }
   static median(l) {
     let s = l.leastToGreatest()
-    if (s.length%2==0) {
-      let h = s.length/2
-      return (s[h]+s[h-1])/2
+    if (s.length % 2 == 0) {
+      let h = s.length / 2
+      return (s[h] + s[h - 1]) / 2
     }
     return s
   }
@@ -250,7 +250,7 @@ class List {
     return List.max(this)
   }
   static range(l) {
-    return l.max()-l.min()
+    return l.max() - l.min()
   }
   range() {
     return List.range(this)
@@ -267,16 +267,16 @@ class List {
   }
   static Q1(l) {
     let s = l.leastToGreatest()
-    if (s.length%2==0) return s.slice(0, s.length/2).median()
-    return s.slice(0, floor(s.length/2)).median()
+    if (s.length % 2 == 0) return s.slice(0, s.length / 2).median()
+    return s.slice(0, floor(s.length / 2)).median()
   }
   Q1() {
     return List.Q1(this)
   }
   static Q3(l) {
     let s = l.greatestToLeast()
-    if (s.length%2==0) return s.slice(0, s.length/2).median()
-    return s.slice(0, floor(s.length/2)).median()
+    if (s.length % 2 == 0) return s.slice(0, s.length / 2).median()
+    return s.slice(0, floor(s.length / 2)).median()
   }
   Q3() {
     return List.Q3(this)
@@ -290,8 +290,8 @@ class List {
   static outliers(l) {
     let o = new List()
     let iqr = l.IQR()
-    let a = l.Q1()-1.5*iqr
-    let b = l.Q3()+1.5*iqr
+    let a = l.Q1() - 1.5 * iqr
+    let b = l.Q3() + 1.5 * iqr
     for (let x of l) if (x < a || x > b) o.push(x)
     return o
   }
@@ -307,14 +307,14 @@ class List {
   static variability(l, nSub) {
     let a = l.mean()
     let n = l.length - nSub
-    let m = l.map(x => (x-a)**2)
-    return m.sum()/n
+    let m = l.map(x => (x - a) ** 2)
+    return m.sum() / n
   }
   variability(nSub) {
     return List.variability(this, nSub)
   }
   static variance(l, sample) {
-    return List.variability(l, sample?l.length-1:l.length)
+    return List.variability(l, sample ? l.length - 1 : l.length)
   }
   variance(sample) {
     return List.variance(this, sample)
@@ -331,25 +331,25 @@ class List {
     let sx = x.standardDeviation(true)
     let yb = y.mean()
     let sy = y.standardDeviation(true)
-    return x.map(a => (a-xb)/sx).map((a,i) => a*(y[i]-yb)/sy).sum()/(x.length-1)
+    return x.map(a => (a - xb) / sx).map((a, i) => a * (y[i] - yb) / sy).sum() / (x.length - 1)
   }
   correlation(l) {
     return List.correlation(this, l)
   }
   static determination(x, y) {
-    return List.correlation(x, y)**2
+    return List.correlation(x, y) ** 2
   }
   determination(l) {
     return List.determination(this, l)
   }
   static linRegSlope(x, y) {
-    return List.correlation(x, y)*y.standardDeviation(true)/x.standardDeviation(true)
+    return List.correlation(x, y) * y.standardDeviation(true) / x.standardDeviation(true)
   }
   linRegSlope(l) {
     return List.linRegSlope(this, l)
   }
   static linRegIntercept(x, y) {
-    return y.mean()-(List.linRegSlope(x, y)*x.mean())
+    return y.mean() - (List.linRegSlope(x, y) * x.mean())
   }
   linRegIntercept(l) {
     return List.linRegIntercept(this, l)
@@ -367,15 +367,15 @@ function singleOrArray(func, ...params) {
 }
 
 const PI = Math.PI
-const TWO_PI = 2*PI
-const HALF_PI = PI/2
+const TWO_PI = 2 * PI
+const HALF_PI = PI / 2
 
 const ROOT_PI = Math.sqrt(PI)
 const ROOT_TWO_PI = Math.sqrt(TWO_PI)
 const ROOT_HALF_PI = Math.sqrt(HALF_PI)
 
-const radToDeg = x => singleOrArray(x => x*180/Math.PI, x)
-const degToRad = x => singleOrArray(x => x*Math.PI/180, x)
+const radToDeg = x => singleOrArray(x => x * 180 / Math.PI, x)
+const degToRad = x => singleOrArray(x => x * Math.PI / 180, x)
 
 const floor = x => singleOrArray(Math.floor, x)
 const ceil = x => singleOrArray(Math.ceil, x)
@@ -386,55 +386,55 @@ const abs = x => singleOrArray(Math.abs, x)
 const max = (...x) => singleOrArray(Math.max, ...x)
 const min = (...x) => singleOrArray(Math.min, ...x)
 
-const map = (x, a, b, c, d) => singleOrArray((x, a, b, c, d) => (x-a)/(b-a)*(d-c)+c, x, a, b, c, d)
+const map = (x, a, b, c, d) => singleOrArray((x, a, b, c, d) => (x - a) / (b - a) * (d - c) + c, x, a, b, c, d)
 const lerp = (t, a, b) => map(t, 0, 1, a, b)
 
-const sin = (x, d) => singleOrArray((x, d) => !d?Math.sin(x):sin(degToRad(x)), x, d)
-const cos = (x, d) => singleOrArray((x, d) => !d?Math.cos(x):cos(degToRad(x)), x, d)
-const tan = (x, d) => singleOrArray((x, d) => !d?Math.tan(x):tan(degToRad(x)), x, d)
-const asin = (x, d) => singleOrArray((x, d) => !d?Math.asin(x):radToDeg(asin(x)), x, d)
-const acos = (x, d) => singleOrArray((x, d) => !d?Math.acos(x):radToDeg(acos(x)), x, d)
-const atan = (x, d) => singleOrArray((x, d) => !d?Math.atan(x):radToDeg(atan(x)), x, d)
-const sinh = (x, d) => singleOrArray((x, d) => !d?Math.sinh(x):sinh(degToRad(x)), x, d)
-const cosh = (x, d) => singleOrArray((x, d) => !d?Math.cosh(x):cosh(degToRad(x)), x, d)
-const tanh = (x, d) => singleOrArray((x, d) => !d?Math.tanh(x):tanh(degToRad(x)), x, d)
-const asinh = (x, d) => singleOrArray((x, d) => !d?Math.asinh(x):radToDeg(asinh(x)), x, d)
-const acosh = (x, d) => singleOrArray((x, d) => !d?Math.acosh(x):radToDeg(acosh(x)), x, d)
-const atanh = (x, d) => singleOrArray((x, d) => !d?Math.atanh(x):radToDeg(atanh(x)), x, d)
+const sin = (x, d) => singleOrArray((x, d) => !d ? Math.sin(x) : sin(degToRad(x)), x, d)
+const cos = (x, d) => singleOrArray((x, d) => !d ? Math.cos(x) : cos(degToRad(x)), x, d)
+const tan = (x, d) => singleOrArray((x, d) => !d ? Math.tan(x) : tan(degToRad(x)), x, d)
+const asin = (x, d) => singleOrArray((x, d) => !d ? Math.asin(x) : radToDeg(asin(x)), x, d)
+const acos = (x, d) => singleOrArray((x, d) => !d ? Math.acos(x) : radToDeg(acos(x)), x, d)
+const atan = (x, d) => singleOrArray((x, d) => !d ? Math.atan(x) : radToDeg(atan(x)), x, d)
+const sinh = (x, d) => singleOrArray((x, d) => !d ? Math.sinh(x) : sinh(degToRad(x)), x, d)
+const cosh = (x, d) => singleOrArray((x, d) => !d ? Math.cosh(x) : cosh(degToRad(x)), x, d)
+const tanh = (x, d) => singleOrArray((x, d) => !d ? Math.tanh(x) : tanh(degToRad(x)), x, d)
+const asinh = (x, d) => singleOrArray((x, d) => !d ? Math.asinh(x) : radToDeg(asinh(x)), x, d)
+const acosh = (x, d) => singleOrArray((x, d) => !d ? Math.acosh(x) : radToDeg(acosh(x)), x, d)
+const atanh = (x, d) => singleOrArray((x, d) => !d ? Math.atanh(x) : radToDeg(atanh(x)), x, d)
 
-const round = (x, p) => singleOrArray((x, a) => Math.round(x*a)/a, x, 10**(p!=undefined?p:0))
-const trunc = (x, p) => singleOrArray((x, a) => Math.trunc(x*a)/a, x, 10**(p!=undefined?p:0))
+const round = (x, p) => singleOrArray((x, a) => Math.round(x * a) / a, x, 10 ** (p != undefined ? p : 0))
+const trunc = (x, p) => singleOrArray((x, a) => Math.trunc(x * a) / a, x, 10 ** (p != undefined ? p : 0))
 
 function rand(a, b, c) {
   if (c == undefined) {
     if (b == undefined) {
       if (a == undefined) return Math.random()
-      return rand()*a
+      return rand() * a
     }
-    return rand(b-a) + a
+    return rand(b - a) + a
   }
   let res = []
-  for (let i=0; i<c; i++) res.push(rand(a, b))
+  for (let i = 0; i < c; i++) res.push(rand(a, b))
   return res
 }
 
 function randInt(a, b, c) {
   if (c == undefined) {
-    if (b == undefined) return floor(rand(a+1))
-    return randInt(b-a) + a
+    if (b == undefined) return floor(rand(a + 1))
+    return randInt(b - a) + a
   }
   let res = []
-  for (let i=0; i<c; i++) res.push(randInt(a, b))
+  for (let i = 0; i < c; i++) res.push(randInt(a, b))
   return res
 }
 
 function randGaussian(a) {
   if (a == undefined) {
     let t = 0
-    for (let i=0;i<6;i++) t += rand()
+    for (let i = 0; i < 6; i++) t += rand()
     return t / 6
   }
   let res = []
-  for (let i=0;i<a;i++) res.push(randGaussian())
+  for (let i = 0; i < a; i++) res.push(randGaussian())
   return res
 }

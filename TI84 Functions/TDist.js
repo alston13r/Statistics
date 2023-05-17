@@ -1,7 +1,7 @@
 function TPDF(x, df) {
-  let c1 = math.gamma((df+1)/2)/(sqrt(df*PI)*math.gamma(df/2))
-  let c2 = -(df+1)/2
-  return c1*(1+x**2/df)**c2
+  let c1 = math.gamma((df + 1) / 2) / (sqrt(df * PI) * math.gamma(df / 2))
+  let c2 = -(df + 1) / 2
+  return c1 * (1 + x ** 2 / df) ** c2
 }
 
 

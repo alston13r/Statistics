@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Chi-Squared Distributions</title>
-    <link rel='stylesheet' href='../distStyle.css'>
-    <link rel='stylesheet' href='../textStyle.css'>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.5.0/math.min.js'></script>
-    <script src='../../MathUtilities.js'></script>
-    <script src='../../TI84 Functions/ChiDist.js'></script>
-    <script src='../../GraphingUtility.js'></script>
-    <script src='../../Graph.js'></script>
-  </head>
-  <body>
-    <div id='leftBox'>
-      <div id='graphContainer' class='container'></div>
-      <div id='buttonContainer' class='container'>
-        <div id='graphIt' class='coolButton' data-pressed='false'>Graph</div>
-        <div id='calcPDF' class='coolButton' data-pressed='false'>PDF</div>
-        <div id='calcCDF' class='coolButton' data-pressed='false'>CDF</div>
-        <div id='calcOutput'>Output:<br>0</div>
-      </div>
+
+<head>
+  <title>Chi-Squared Distributions</title>
+  <link rel='stylesheet' href='../distStyle.css'>
+  <link rel='stylesheet' href='../textStyle.css'>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.5.0/math.min.js'></script>
+  <script src='../../MathUtilities.js'></script>
+  <script src='../../TI84 Functions/ChiDist.js'></script>
+  <script src='../../GraphingUtility.js'></script>
+  <script src='../../Graph.js'></script>
+</head>
+
+<body>
+  <div id='leftBox'>
+    <div id='graphContainer' class='container'></div>
+    <div id='buttonContainer' class='container'>
+      <div id='graphIt' class='coolButton' data-pressed='false'>Graph</div>
+      <div id='calcPDF' class='coolButton' data-pressed='false'>PDF</div>
+      <div id='calcCDF' class='coolButton' data-pressed='false'>CDF</div>
+      <div id='calcOutput'>Output:<br>0</div>
     </div>
-    <div id='rightBox'>
-      <div id='distInfoContainer' class='container'>
-        <!-- A <span class='important'>density curve</span> is a curve that<br>
+  </div>
+  <div id='rightBox'>
+    <div id='distInfoContainer' class='container'>
+      <!-- A <span class='important'>density curve</span> is a curve that<br>
         • is always on or above the horizontal axis, and<br>
         • has area exactly 1 underneath it.<br>
         A density curve describes the overall pattern of a distribution.
@@ -62,29 +64,30 @@
         within 2<span class='ital'>σ</span> of the mean <span class='ital'>μ</span>.<br>
         • Approximately <span class='important'>99.7%</span> of the observations fall
         within 3<span class='ital'>σ</span> of the mean <span class='ital'>μ</span>. -->
-      </div>
-      <div id='calcInfoContainer' class='container'>
-        <!-- Mean <input type='text' id='meanInput'></input><br>
+    </div>
+    <div id='calcInfoContainer' class='container'>
+      <!-- Mean <input type='text' id='meanInput'></input><br>
         Standard Deviation <input type='text' id='stdevInput'></input><br><br>
         Normal PDF<br>
         X Value <input type='text' id='xInput'></input><br><br>
         Normal CDF<br>
         Lower <input type='text' id='lowerInput'></input><br>
         Upper <input type='text' id='upperInput'></input> -->
+    </div>
+    <div id='linkContainer' class='container'>
+      <div>
+        <a href='../../index.html' target='_self'>Home Page</a>
       </div>
-      <div id='linkContainer' class='container'>
-        <div>
-          <a href='../../index.html' target='_self'>Home Page</a>
-        </div>
-        <div>
-          Distributions<br>
-          • <a href='../binom/index.html' target='_self'>Binomial</a><br>
-          • <a href='../geomet/index.html' target='_self'>Geometric</a><br>
-          • <a href='../normal/index.html' target='_self'>Normal</a><br>
-          • <a href='../t/index.html' target='_self'>T</a>
-        </div>
+      <div>
+        Distributions<br>
+        • <a href='../binom/index.html' target='_self'>Binomial</a><br>
+        • <a href='../geomet/index.html' target='_self'>Geometric</a><br>
+        • <a href='../normal/index.html' target='_self'>Normal</a><br>
+        • <a href='../t/index.html' target='_self'>T</a>
       </div>
     </div>
-  </body>
-  <script src='./script.js'></script>
+  </div>
+</body>
+<script src='./script.js'></script>
+
 </html>

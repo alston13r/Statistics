@@ -1,99 +1,102 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>T Distributions</title>
-    <link rel='stylesheet' href='../distStyle.css'>
-    <link rel='stylesheet' href='../textStyle.css'>
-    <link rel='stylesheet' href='../fractionStyle.css'>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.5.0/math.min.js'></script>
-    <script src='../../MathUtilities.js'></script>
-    <script src='../../TI84 Functions/TDist.js'></script>
-    <script src='../../GraphingUtility.js'></script>
-    <script src='../../Graph.js'></script>
-  </head>
-  <body>
-    <div id='leftBox'>
-      <div id='graphContainer' class='container'></div>
-      <div id='buttonContainer' class='container'>
-        <div id='graphIt' class='coolButton' data-pressed='false'>Graph</div>
-        <div id='calcPDF' class='coolButton' data-pressed='false'>PDF</div>
-        <div id='calcCDF' class='coolButton' data-pressed='false'>CDF</div>
-        <div id='calcOutput'>Output:<br>0</div>
+
+<head>
+  <title>T Distributions</title>
+  <link rel='stylesheet' href='../distStyle.css'>
+  <link rel='stylesheet' href='../textStyle.css'>
+  <link rel='stylesheet' href='../fractionStyle.css'>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.5.0/math.min.js'></script>
+  <script src='../../MathUtilities.js'></script>
+  <script src='../../TI84 Functions/TDist.js'></script>
+  <script src='../../GraphingUtility.js'></script>
+  <script src='../../Graph.js'></script>
+</head>
+
+<body>
+  <div id='leftBox'>
+    <div id='graphContainer' class='container'></div>
+    <div id='buttonContainer' class='container'>
+      <div id='graphIt' class='coolButton' data-pressed='false'>Graph</div>
+      <div id='calcPDF' class='coolButton' data-pressed='false'>PDF</div>
+      <div id='calcCDF' class='coolButton' data-pressed='false'>CDF</div>
+      <div id='calcOutput'>Output:<br>0</div>
+    </div>
+  </div>
+  <div id='rightBox'>
+    <div id='distInfoContainer' class='container'>
+      The statistic <span class='ital'>t</span> has the same interpretation as any
+      standardized statistic: it says how far x̄ is from its mean <span class='ital'>μ</span>
+      in standard deviation units. There is a different <span class='ital'>t</span>
+      distribution for each sample size. We specify a particular <span class='ital'>t</span>
+      distribution by giving its <span class='important'>degrees of freedom (df)</span>.
+      When we perform inference about a population mean <span class='ital'>μ</span>
+      using a <span class='ital'>t</span> distribution, the appropriate degrees of
+      freedom are found by subtracting 1 from the sample size <span class='ital'>n</span>,
+      making df = <span class='ital'>n</span> - 1. We will write the <span class='ital'>t</span>
+      distribution with <span class='ital'>n</span> - 1 degrees of freedom as
+      <span class='ital'>t</span><sub><span class='ital'>n</span>-1</sub> for short.
+      <br><br><br>
+      Draw an SRS of size <span class='ital'>n</span> from a large population
+      that has a Normal distribution with mean <span class='ital'>μ</span>
+      and standard deviation <span class='ital'>σ</span>. The statistic
+      <span class='ital'>t</span> =
+      <div class='frac'>
+        <span><span class='ital'>x̄</span> - <span class='ital'>μ</span></span>
+        <span class='bottom'>
+          <span class='ital'>s</span><sub><span class='ital'>x</span></sub>/√<span class='ital'>n</span>
+        </span>
+      </div>
+      has the <span class='important'><span class='ital'>t</span> distribution</span>
+      with <span class='important'>degrees of freedom</span>
+      df = <span class='ital'>n</span> - 1.
+      When the population distribution isn't Normal, this statistic will have
+      approximately a <span class='ital'>t</span><sub><span class='ital'>n</span>-1</sub>
+      distribution if the sample size is large enough.
+      <br><br><br>
+      • The density curves of <span class='ital'>t</span> distributions
+      are similar in shape to a standard Normal curve. They are symmetric
+      about 0, single-peaked, and bell-shaped.<br>
+      • The spread of <span class='ital'>t</span> distributions is a bit
+      greater than that of a standard Normal distribution. A
+      <span class='ital'>t</span> distribution has more probability in the
+      tails and less in the center than does a standard Normal. This is
+      true because susbstituting the estimate
+      <span class='ital'>s</span><sub><span class='ital'>x</span></sub>
+      for the fixed parameter <span class='ital'>σ</span> introduces more
+      variation into the statistic.<br>
+      • As the degrees of freedom increase, a <span class='ital'>t</span>
+      density curve approaches a standard Normal density curve ever more
+      closely. This happens because
+      <span class='ital'>s</span><sub><span class='ital'>x</span></sub>
+      estimates <span class='ital'>σ</span> more accurately as the sample
+      size increases. So using
+      <span class='ital'>s</span><sub><span class='ital'>x</span></sub>
+      in place of <span class='ital'>σ</span> causes little extra variation
+      when the sample is large.
+    </div>
+    <div id='calcInfoContainer' class='container'>
+      Degrees of Freedom <input type='text' id='dfInput'></input><br><br>
+      T PDF<br>
+      X Value <input type='text' id='xInput'></input><br><br>
+      T CDF<br>
+      Lower <input type='text' id='lowerInput'></input><br>
+      Upper <input type='text' id='upperInput'></input>
+    </div>
+    <div id='linkContainer' class='container'>
+      <div>
+        <a href='../../index.html' target='_self'>Home Page</a>
+      </div>
+      <div>
+        Distributions<br>
+        • <a href='../binom/index.html' target='_self'>Binomial</a><br>
+        • <a href='../chi/index.html' target='_self'>Chi-Squared</a><br>
+        • <a href='../geomet/index.html' target='_self'>Geometric</a><br>
+        • <a href='../normal/index.html' target='_self'>Normal</a>
       </div>
     </div>
-    <div id='rightBox'>
-      <div id='distInfoContainer' class='container'>
-        The statistic <span class='ital'>t</span> has the same interpretation as any
-        standardized statistic: it says how far x̄ is from its mean <span class='ital'>μ</span>
-        in standard deviation units. There is a different <span class='ital'>t</span>
-        distribution for each sample size. We specify a particular <span class='ital'>t</span>
-        distribution by giving its <span class='important'>degrees of freedom (df)</span>.
-        When we perform inference about a population mean <span class='ital'>μ</span>
-        using a <span class='ital'>t</span> distribution, the appropriate degrees of
-        freedom are found by subtracting 1 from the sample size <span class='ital'>n</span>,
-        making df = <span class='ital'>n</span> - 1. We will write the <span class='ital'>t</span>
-        distribution with <span class='ital'>n</span> - 1 degrees of freedom as
-        <span class='ital'>t</span><sub><span class='ital'>n</span>-1</sub> for short.
-        <br><br><br>
-        Draw an SRS of size <span class='ital'>n</span> from a large population
-        that has a Normal distribution with mean <span class='ital'>μ</span>
-        and standard deviation <span class='ital'>σ</span>. The statistic
-        <span class='ital'>t</span> =
-        <div class='frac'>
-          <span><span class='ital'>x̄</span> - <span class='ital'>μ</span></span>
-          <span class='bottom'>
-            <span class='ital'>s</span><sub><span class='ital'>x</span></sub>/√<span class='ital'>n</span>
-          </span>
-        </div>
-        has the <span class='important'><span class='ital'>t</span> distribution</span>
-        with <span class='important'>degrees of freedom</span>
-        df = <span class='ital'>n</span> - 1.
-        When the population distribution isn't Normal, this statistic will have
-        approximately a <span class='ital'>t</span><sub><span class='ital'>n</span>-1</sub>
-        distribution if the sample size is large enough.
-        <br><br><br>
-        • The density curves of <span class='ital'>t</span> distributions
-        are similar in shape to a standard Normal curve. They are symmetric
-        about 0, single-peaked, and bell-shaped.<br>
-        • The spread of <span class='ital'>t</span> distributions is a bit
-        greater than that of a standard Normal distribution. A
-        <span class='ital'>t</span> distribution has more probability in the
-        tails and less in the center than does a standard Normal. This is
-        true because susbstituting the estimate
-        <span class='ital'>s</span><sub><span class='ital'>x</span></sub>
-        for the fixed parameter <span class='ital'>σ</span> introduces more
-        variation into the statistic.<br>
-        • As the degrees of freedom increase, a <span class='ital'>t</span>
-        density curve approaches a standard Normal density curve ever more
-        closely. This happens because
-        <span class='ital'>s</span><sub><span class='ital'>x</span></sub>
-        estimates <span class='ital'>σ</span> more accurately as the sample
-        size increases. So using
-        <span class='ital'>s</span><sub><span class='ital'>x</span></sub>
-        in place of <span class='ital'>σ</span> causes little extra variation
-        when the sample is large.
-      </div>
-      <div id='calcInfoContainer' class='container'>
-        Degrees of Freedom <input type='text' id='dfInput'></input><br><br>
-        T PDF<br>
-        X Value <input type='text' id='xInput'></input><br><br>
-        T CDF<br>
-        Lower <input type='text' id='lowerInput'></input><br>
-        Upper <input type='text' id='upperInput'></input>
-      </div>
-      <div id='linkContainer' class='container'>
-        <div>
-          <a href='../../index.html' target='_self'>Home Page</a>
-        </div>
-        <div>
-          Distributions<br>
-          • <a href='../binom/index.html' target='_self'>Binomial</a><br>
-          • <a href='../chi/index.html' target='_self'>Chi-Squared</a><br>
-          • <a href='../geomet/index.html' target='_self'>Geometric</a><br>
-          • <a href='../normal/index.html' target='_self'>Normal</a>
-        </div>
-      </div>
-    </div>
-  </body>
-  <script src='./script.js'></script>
+  </div>
+</body>
+<script src='./script.js'></script>
+
 </html>

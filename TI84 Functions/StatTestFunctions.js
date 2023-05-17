@@ -1,22 +1,22 @@
 function StandErrOneProp(pHat, n) {
-  return sqrt(pHat*(1-pHat)/n)
+  return sqrt(pHat * (1 - pHat) / n)
 }
 
 function StandErrTwoProp(pHat1, n1, pHat2, n2) {
-  return sqrt(pHat1*(1-pHat1)/n1+pHat2*(1-pHat2)/n2)
+  return sqrt(pHat1 * (1 - pHat1) / n1 + pHat2 * (1 - pHat2) / n2)
 }
 
 function StandErrOneMean(s, n) {
-  return s/sqrt(n)
+  return s / sqrt(n)
 }
 
 function StandErrTwoMean(s1, n1, s2, n2) {
-  return sqrt(s1**2/n1+s2**2/n2)
+  return sqrt(s1 ** 2 / n1 + s2 ** 2 / n2)
 }
 
 function StandErrLine(xl, yl) {
   if (xl.length != yl.length) return
-  return yl.variability(2) / (xl.standardDeviation(true)*sqrt(xl.length-1))
+  return yl.variability(2) / (xl.standardDeviation(true) * sqrt(xl.length - 1))
 }
 
 class InputType {
@@ -39,48 +39,48 @@ class EqualityChoice {
 // proportions
 
 // one prop z int
-  // 1 sample
-    // random
-    // 10%
-    // large counts
-      // at least 10 successes and failures
-        // npHat >= 10   and   n(1-pHat) >= 10
+// 1 sample
+// random
+// 10%
+// large counts
+// at least 10 successes and failures
+// npHat >= 10   and   n(1-pHat) >= 10
 
 function OnePropZInt(x, n, cLevel) {
   let pHat = x / n
   // p hat +- z*sqrt(phat(1-phat)/n)
-  
+
 }
 
 // one prop z test
-  // 1 sample
-    // random
-    // 10%
-    // large counts
-        // np0 >= 10   and   n(1-p0) >= 10
+// 1 sample
+// random
+// 10%
+// large counts
+// np0 >= 10   and   n(1-p0) >= 10
 
 function OnePropZTest(p0, x, n, equality) {
 
 }
 
 // two prop z int
-  // 2 samples
-    // random
-    // 10% for both samples
-    // large counts
-      // at least 10 successes and failures in both groups
-        // n1pHat1, n1(1-pHat1), n2pHat2, n2(1-pHat2) >= 10
+// 2 samples
+// random
+// 10% for both samples
+// large counts
+// at least 10 successes and failures in both groups
+// n1pHat1, n1(1-pHat1), n2pHat2, n2(1-pHat2) >= 10
 
 function TwoPropZInt(x1, n1, x2, n2, cLevel) {
 
 }
 
 // two prop z test
-  // 2 samples
-    // random
-    // 10% for both samples
-    // large counts
-      // n1pHat1, n1(1-pHat1), n2pHat2, n2(1-pHat2) >= 10
+// 2 samples
+// random
+// 10% for both samples
+// large counts
+// n1pHat1, n1(1-pHat1), n2pHat2, n2(1-pHat2) >= 10
 
 function TwoPropZTest(x1, n1, x2, n2, equality) {
 
@@ -94,13 +94,13 @@ function TwoPropZTest(x1, n1, x2, n2, equality) {
 // means
 
 // t interval
-  // 1 sample
-    // random
-    // 10%
-    // normal / large sample
-      // population distribution normal or sample size large
-        // n >= 30
-      // no strong skewness or outliers if n < 30 and pop has unknown shape
+// 1 sample
+// random
+// 10%
+// normal / large sample
+// population distribution normal or sample size large
+// n >= 30
+// no strong skewness or outliers if n < 30 and pop has unknown shape
 
 function TInterval(input, a, b, c, d) {
   if (input = InputType.Data) {
@@ -116,13 +116,13 @@ function TInterval(input, a, b, c, d) {
 
 
 // t test
-  // 1 sample
-    // random
-    // 10%
-    // normal / large sample
-      // population distribution normal or sample size large
-        // n >= 30
-      // no strong skewness or outliers if n < 30 and pop has unknown shape
+// 1 sample
+// random
+// 10%
+// normal / large sample
+// population distribution normal or sample size large
+// n >= 30
+// no strong skewness or outliers if n < 30 and pop has unknown shape
 
 function TTest(input, mu0, a, b, c, d) {
   if (input == InputType.Data) {
@@ -137,13 +137,13 @@ function TTest(input, mu0, a, b, c, d) {
 }
 
 // two samp t int
-  // 2 samples
-    // random
-    // 10% for both samples
-    // normal / large samples
-      // population distributions normal or sample sizes large
-        // n1 >= 30 and n2 >= 30
-      // no strong skewness or outliers if n < 30 and pop has unknown shape
+// 2 samples
+// random
+// 10% for both samples
+// normal / large samples
+// population distributions normal or sample sizes large
+// n1 >= 30 and n2 >= 30
+// no strong skewness or outliers if n < 30 and pop has unknown shape
 
 function TwoSampTInt(input, a, b, c, d, e, f, g) {
   if (input == InputType.Data) {
@@ -162,13 +162,13 @@ function TwoSampTInt(input, a, b, c, d, e, f, g) {
 }
 
 // two samp t test
-  // 2 samples
-    // random
-    // 10% for both samples
-    // normal / large samples
-      // population distributions normal or sample sizes large
-        // n1 >= 30 and n2 >= 30
-      // no strong skewness or outliers if n < 30 and pop has unknown shape
+// 2 samples
+// random
+// 10% for both samples
+// normal / large samples
+// population distributions normal or sample sizes large
+// n1 >= 30 and n2 >= 30
+// no strong skewness or outliers if n < 30 and pop has unknown shape
 
 function TwoSampTTest(input, a, b, c, d, e, f, g) {
   if (input == InputType.Data) {
@@ -204,11 +204,11 @@ function TwoSampTTest(input, a, b, c, d, e, f, g) {
 
 
 function Chi2GOFTest() {
-  
+
 }
 
 function Chi2Test() {
-  
+
 }
 
 function LinRegTInt() {
