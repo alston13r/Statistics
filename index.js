@@ -29,7 +29,7 @@ http.createServer((req, res) => {
       break
     case 'styles':
       type = typeEquiv.style
-      location = styleDirectory+url[1]
+      location = styleDirectory+url[1]+'.css'
       break
     case 'distributions':
       type = typeEquiv.page
@@ -37,11 +37,7 @@ http.createServer((req, res) => {
       break
     case 'scripts':
       type = typeEquiv.script
-      location = scriptDirectory+url[1]
-      break
-    case 'pageScripts':
-      type = typeEquiv.script
-      location = scriptDirectory+'pageScripts/'+url[1]
+      location = scriptDirectory+url[1]+'.js'
       break
     default:
       type = 'text/plain'
