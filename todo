@@ -43,3 +43,6 @@ Graphing utilities
 
 Convert project into node
 Create server to run r stuff
+
+Collapse distribution scripts onto their pageScript files
+  keep lowercase variant
