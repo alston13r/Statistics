@@ -1,2 +1,4 @@
 .replit
 replit.nix
+package.json
+package-lock.json

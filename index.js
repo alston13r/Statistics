@@ -14,6 +14,12 @@ const scriptDirectory = resourceDirectory+'scripts/'
 const faviconDirectory = resourceDirectory+'others/'
 http.createServer((req, res) => {
   let url = req.url.split('/')
+  if (url[1] == 'keepalive') {
+    res.statusCode = 200
+    res.end('I\'m alive!')
+    console.log('Got pinged so I ponged!')
+    return
+  }
   url = url.slice(url.length-2)
   let type = 'text/plain'
   let location = htmlDirectory+'index.html'
