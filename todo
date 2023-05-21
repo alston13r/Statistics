@@ -42,3 +42,6 @@ Graphing utilities
     grid lines
 
 Create server to run r stuff
+
+If url split length > 2 then invalid page
+  Allows for shorthands
