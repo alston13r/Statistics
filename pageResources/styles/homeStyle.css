@@ -7,34 +7,22 @@ body {
 }
 
 #mainContainer {
-  width: 100vw;
-  height: 100vh;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 20px;
 }
 
-#distLinkContainer {
+.linkContainer {
   padding: 10px;
   background-color: #444;
-  width: fit-content;
   font-size: 150%;
-  height: fit-content;
   border-radius: 10px;
-  margin: 10px;
+  width: fit-content;
+  height: fit-content;
 }
 
-#distLinkContainer a {
-  color: #34bfff
-}
-
-#distLinkContainer p {
-  line-height: 0%;
-}
-
-ul {
-  list-style-type: square;
-  padding-left: 25px;
-  margin-bottom: 0px;
-}
-
-ul li a {
+a {
   color: #34bfff
 }
